@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-main-service
+spec:
+  selector:
+    matchLabels:
+      app: admin-main-service
+  template:
+    metadata:
+      labels:
+        app: admin-main-service
+    spec:
+      containers:
+      - name: ss-global-main-service
+        image: IMAGE_URL
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9296
+        env: 
+        - name: EUREKA_SERVER_ADDRESS
+          valueFrom:
+           configMapKeyRef:
+            key: eureka_server_address
+            name: eureka-cm
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: main-service-svc
+spec:
+  selector:
+    app: admin-main-service
+  ports:
+  - port: 80
+    targetPort: 9296

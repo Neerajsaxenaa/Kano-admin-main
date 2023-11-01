@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: admin-main-service
+  config:
+    import: optional:configserver:http://config-server-svc:80
+  datasource:
+    url: jdbc:postgresql://52.66.98.25:5433/global_uat
+    username: ubuntu
+    password: ubuntu@deepmindz2023
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 10
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update # or create, create-drop, none
+    show-sql: true # Set to true to show SQL queries in the console    
+
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+
+
+
+server: 
+  port: 8081
+  max-http-header-size: 20000B
+  error:
+    whitelabel:
+      enabled: true
+      
