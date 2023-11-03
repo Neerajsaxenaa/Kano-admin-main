@@ -33,14 +33,6 @@ public class JobAidsServiceImpl implements JobAidsService {
 	@Autowired
 	JobAidsUtil jobAidsUtil;
 
-	@Override
-	public JobAidsResponse createJobs(JobAidsRequestDto dto) throws IllegalStateException, IOException {
-		JobAids jobAids = jobAidsUtil.mapRequestDtoToEntity(dto);
-		JobAids createJobAids = jobAidsRepository.save(jobAids);
-		return new JobAidsResponse(createJobAids.getJobid(), createJobAids.getJobName(), createJobAids.getRole_id(),
-				createJobAids.getRead_duration(), createJobAids.getProfile_img(), createJobAids.getContent_type(),
-				createJobAids.getContent());
-	}
 	
 
 	@Override
@@ -107,6 +99,9 @@ public class JobAidsServiceImpl implements JobAidsService {
 				createJobAids.getRead_duration(), createJobAids.getProfile_img(), createJobAids.getContent_type(),
 				createJobAids.getContent());
 	}
+
+
+
 	
 
 	

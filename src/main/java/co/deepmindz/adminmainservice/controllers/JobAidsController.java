@@ -35,24 +35,7 @@ public class JobAidsController {
 	@Autowired
 	JobAidsUtil jobAidsUtil;
 
-	@PostMapping(value = "/add-job-aids", consumes = { org.springframework.http.MediaType.APPLICATION_JSON_VALUE,
-			org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<Object> createJobAids(
-			@RequestParam(required = true, value = "identifier_img") MultipartFile identifier_img,
-			@RequestParam(required = false, value = "content_file") MultipartFile content_file,
-			@RequestParam(required = true, value = "data") String data) throws IOException {
 
-		JobAidsResponse createJobAidsResponse = jobAidsService
-				.createJobs(jobAidsUtil.saveFile(identifier_img, content_file, data));
-		if (createJobAidsResponse != null) {
-			return CustomHttpResponse.responseBuilder("Job_Aids has been created", HttpStatus.OK,
-					createJobAidsResponse);
-		} else {
-			return CustomHttpResponse.responseBuilder("Job_Aids already exists Failed to create Job_Aids",
-					HttpStatus.ALREADY_REPORTED, null);
-		}
-
-	}
 
 	@GetMapping("/public-media/download/{filename:.+}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
@@ -120,7 +103,7 @@ public class JobAidsController {
 		}
 	}
 
-	@PostMapping(value = "image/add-job-aids", consumes = { org.springframework.http.MediaType.APPLICATION_JSON_VALUE,
+	@PostMapping(value = "/add-job-aids", consumes = { org.springframework.http.MediaType.APPLICATION_JSON_VALUE,
 			org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE })
 	public ResponseEntity<Object> createJobAidsForImageView(
 			@RequestParam(required = true, value = "identifier_img") MultipartFile identifier_img,
@@ -128,7 +111,7 @@ public class JobAidsController {
 			@RequestParam(required = true, value = "data") String data) throws IOException {
 
 		JobAidsResponse createJobAidsResponse = jobAidsService
-				.createJobs(jobAidsUtil.saveFiles(identifier_img, content_file, data));
+				.createJob(jobAidsUtil.saveFiles(identifier_img, content_file, data));
 		if (createJobAidsResponse != null) {
 			return CustomHttpResponse.responseBuilder("Job_Aids has been created", HttpStatus.OK,
 					createJobAidsResponse);

@@ -47,9 +47,10 @@ public class JobAidsUtil {
 	private JobAidsRepository jobAidsRepository;
 
 	private enum content_type {
-		File, Text
+		File, Text,Image
 	};
 	private String FILE_PATH_ROOT = "src/main/resources/static/";
+
 
 
 	public JobAids mapRequestDtoToEntity(JobAidsRequestDto dto) throws IllegalStateException, IOException {
@@ -65,68 +66,13 @@ public class JobAidsUtil {
 		return jobAids;
 	}
 
-	public JobAidsRequestDto saveFile(MultipartFile identifier_img, MultipartFile content_file, String data)
-			throws IllegalStateException, IOException {
-		JobAidsRequestDto jobAidsRequest = null;
-		String downloadUrl = null;
-		String imageDirectory = "src/main/resources/static/";
-		String currentDirectory = System.getProperty("user.dir");
-		String fileName = StringUtils.cleanPath(identifier_img.getOriginalFilename());
-		String fullImageDirectory = currentDirectory + "/" + imageDirectory;
-		File directory = new File(fullImageDirectory);
-
-		// Create the directory if it doesn't exist
-		if (!directory.exists()) {
-			if (directory.mkdirs()) {
-				System.out.println("Directory created successfully.");
-			} else {
-				System.out.println("Failed to create directory.");
-			}
-		}
-		File destinationFile = new File(fullImageDirectory, fileName);
-		identifier_img.transferTo(destinationFile);
-		String url = "/admin-main/job-aids/public-media/download/" + fileName; // Adjust the URL path as needed
-		downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path(url).toUriString();
-		jobAidsRequest = objectMapper.readValue(data, JobAidsRequestDto.class);
-		jobAidsRequest.setProfile_img(downloadUrl);
-
-		ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, String> datamap = objectMapper.readValue(data, new TypeReference<Map<String, String>>() {
-		});
-		String contentType = datamap.get("content_type");
-		if (contentType.equalsIgnoreCase(content_type.File.name())) {
-			String pdfURI = null;
-			String imageDirectory1 = "src/main/resources/pdf/";
-			String currentDirectory1 = System.getProperty("user.dir");
-			String fileName1 = StringUtils.cleanPath(content_file.getOriginalFilename());
-			String fullImageDirectory1 = currentDirectory1 + "/" + imageDirectory1;
-			File directory1 = new File(fullImageDirectory1);
-
-			// Create the directory if it doesn't exist
-			if (!directory1.exists()) {
-				if (directory1.mkdirs()) {
-					System.out.println("Directory created successfully.");
-				} else {
-					System.out.println("Failed to create directory.");
-				}}
-			
-			File destinationFile1 = new File(fullImageDirectory1, fileName1);
-			content_file.transferTo(destinationFile1);
-			String url1 = "/admin-main/job-aids/public-media/download/" + fileName1; // Adjust the URL path as needed
-			pdfURI = ServletUriComponentsBuilder.fromCurrentContextPath().path(url1).toUriString();
-			jobAidsRequest = objectMapper.readValue(data, JobAidsRequestDto.class);
-			jobAidsRequest.setContent(pdfURI);
-			jobAidsRequest.setProfile_img(downloadUrl);
-		} else if (contentType.equalsIgnoreCase(content_type.Text.name())) {
-			jobAidsRequest.setContent(datamap.get("content"));
-		}return jobAidsRequest;
-		}
-	
+		
 
 	public ResponseEntity<byte[]> getImage(@PathVariable("filename") String filename) {
         byte[] image = new byte[0];
         try {
             image = FileUtils.readFileToByteArray(new File(FILE_PATH_ROOT+filename));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -249,10 +195,37 @@ public class JobAidsUtil {
 			content_file.transferTo(destinationFile1);
 			String url1 = "/admin-main/job-aids/public-media/download/" + fileName1; // Adjust the URL path as needed
 			pdfURI = ServletUriComponentsBuilder.fromCurrentContextPath().path(url1).toUriString();
+//			System.out.println("pdf uri"+pdfURI);
 			jobAidsRequest = objectMapper.readValue(data, JobAidsRequestDto.class);
 			jobAidsRequest.setContent(pdfURI);
 			jobAidsRequest.setProfile_img(downloadUrl);
-		} else if (contentType.equalsIgnoreCase(content_type.Text.name())) {
+		}else if (contentType.equalsIgnoreCase(content_type.Image.name())) {
+			String pdfURI = null;
+			String imageDirectory2 = "src/main/resources/static/";
+			String currentDirectory2 = System.getProperty("user.dir");
+			String fileName2 = StringUtils.cleanPath(content_file.getOriginalFilename());
+			String fullImageDirectory2 = currentDirectory2 + "/" + imageDirectory2;
+			File directory2 = new File(fullImageDirectory2);
+
+			// Create the directory if it doesn't exist
+			if (!directory2.exists()) {
+				if (directory2.mkdirs()) {
+					System.out.println("Directory created successfully.");
+				} else {
+					System.out.println("Failed to create directory.");
+				}}
+			
+			File destinationFile1 = new File(fullImageDirectory2, fileName2);
+			content_file.transferTo(destinationFile1);
+			String url2 = "/admin-main/job-aids/public-media/image/" + fileName2; // Adjust the URL path as needed
+			pdfURI = ServletUriComponentsBuilder.fromCurrentContextPath().path(url2).toUriString();
+		//	System.out.println("pdf url" + pdfURI);
+			jobAidsRequest = objectMapper.readValue(data, JobAidsRequestDto.class);
+			jobAidsRequest.setContent(pdfURI);
+			jobAidsRequest.setProfile_img(downloadUrl);
+			
+		}
+		else if (contentType.equalsIgnoreCase(content_type.Text.name())) {
 			jobAidsRequest.setContent(datamap.get("content"));
 		}return jobAidsRequest;
 		}

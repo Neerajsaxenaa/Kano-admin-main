@@ -18,8 +18,7 @@ import co.deepmindz.adminmainservice.dto.JobAidsResponse;
 public interface JobAidsService {
 	
 	
-	 public JobAidsResponse createJobs(JobAidsRequestDto dto) throws IllegalStateException, IOException ;
-	 
+
 		public ResponseEntity<Resource> downloadFile(String filename);
 
 		public JobAidsResponse createJob(JobAidsRequestDto dto) throws IllegalStateException, IOException;
