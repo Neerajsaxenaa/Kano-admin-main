@@ -55,7 +55,7 @@ public class BrandController {
             }
             File destinationFile = new File(fullImageDirectory, fileName);
             file.transferTo(destinationFile);
-            String url = "/brand/entity/download/" + fileName; // Adjust the URL path as needed
+            String url = "/admin-main/brand/entity/download/" + fileName; // Adjust the URL path as needed
             String downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path(url)
                     .toUriString();
