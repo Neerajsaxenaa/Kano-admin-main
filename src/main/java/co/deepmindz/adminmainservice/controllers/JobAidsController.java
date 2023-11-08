@@ -56,7 +56,7 @@ public class JobAidsController {
 
 		} else {
 			return CustomHttpResponse.responseBuilder("jobAids with roleId " + role_id + "not found..!",
-					HttpStatus.NOT_FOUND, jobAidsById);
+					HttpStatus.OK, jobAidsById);
 
 		}
 	}
@@ -88,7 +88,7 @@ public class JobAidsController {
 	public ResponseEntity<Object> getAllJobAids() throws ResourceNotFoundException {
 		List<JobAidsResponse> getJob = jobAidsService.getAllJobs();
 		if (getJob == null || getJob.size() == 0)
-			return CustomHttpResponse.responseBuilder("JobAids Not Found", HttpStatus.NOT_FOUND, getJob);
+			return CustomHttpResponse.responseBuilder("JobAids Not Found", HttpStatus.OK, getJob);
 
 		return CustomHttpResponse.responseBuilder("All available JobAids", HttpStatus.OK, getJob);
 	}
