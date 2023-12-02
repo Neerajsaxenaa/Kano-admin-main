@@ -13,9 +13,13 @@ public class Templates {
 		Team_Visit, Individual_Visit
 	}
 
+	public enum LOGO_TYPES {
+		splash_screen, login_screen
+	}
+
 	public static ParameterizedTypeReference<Map<String, String>> responseTypeForRestAPICall = new ParameterizedTypeReference<>() {
 	};
-	
+
 	public enum ALLSERVICES {
 		admin_main {
 			public String toString() {
@@ -28,7 +32,7 @@ public class Templates {
 				return "http://admin-org-hierarchy-service";
 			}
 		},
-		
+
 		visit {
 			public String toString() {
 				return "http://ss-visit-service";

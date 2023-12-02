@@ -3,6 +3,7 @@ package co.deepmindz.adminmainservice.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.deepmindz.adminmainservice.models.Resources;
+import co.deepmindz.adminmainservice.repository.ResourceRepo;
 import co.deepmindz.adminmainservice.resources.CustomHttpResponse;
 import co.deepmindz.adminmainservice.services.ResourceService;
 
@@ -37,6 +39,9 @@ public class BrandController {
 	private ResourceService resourceService;
 	@Autowired
 	private ObjectMapper objectMapper;
+	
+	@Autowired
+	private ResourceRepo resourceRepo;
 
 	private String FILE_PATH_ROOT = "src/main/resources/static/";
 
@@ -119,6 +124,21 @@ public class BrandController {
 
 		return CustomHttpResponse.responseBuilder(type + " uploaded successfully", HttpStatus.CREATED, response);
 
+	}
+	
+	@GetMapping("/get-all-images")
+	public ResponseEntity<Object> getAllImages(){
+		 List<Resources> findAllImages = resourceRepo.findAll();
+		if (findAllImages.isEmpty()){
+			return CustomHttpResponse.responseBuilder("Images are not found", HttpStatus.OK, findAllImages);
+		}
+		return CustomHttpResponse.responseBuilder("All avilable images",HttpStatus.OK, findAllImages);
+		
+			
+			
+		
+		
+		
 	}
 
 }

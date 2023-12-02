@@ -2,6 +2,7 @@ package co.deepmindz.adminmainservice.models;
 
 import org.hibernate.annotations.UuidGenerator;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -14,6 +15,7 @@ public class Resources {
 //	@GeneratedValue(strategy = GenerationType.AUTO)
 	@UuidGenerator
 	private String resourceId;
+
 	private String type;
 	private String name;
 	private String url;
