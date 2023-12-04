@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import co.deepmindz.adminmainservice.dto.BrandImagesResponseDto;
 import co.deepmindz.adminmainservice.models.Resources;
 import co.deepmindz.adminmainservice.repository.ResourceRepo;
 import co.deepmindz.adminmainservice.resources.CustomHttpResponse;
@@ -43,6 +44,13 @@ public class ResourceService {
 	public Resources findByType(String type) {
 		Resources findByType = resourceRepo.findByType(type);
 		return findByType;
+	}
+
+	public BrandImagesResponseDto findAllImages() {
+		List<Resources> findAll = resourceRepo.findAll();
+		BrandImagesResponseDto brandImagesResponseDto = resourceUtil.mapEntityToResponseDto(findAll);
+		return brandImagesResponseDto;
+		
 	}
 	
 

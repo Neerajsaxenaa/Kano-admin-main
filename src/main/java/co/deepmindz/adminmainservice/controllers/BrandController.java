@@ -28,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import co.deepmindz.adminmainservice.dto.BrandImagesResponseDto;
 import co.deepmindz.adminmainservice.models.Resources;
 import co.deepmindz.adminmainservice.repository.ResourceRepo;
 import co.deepmindz.adminmainservice.resources.CustomHttpResponse;
@@ -157,8 +158,9 @@ public class BrandController {
 	}
 	@GetMapping("/get-all-images")
 	public ResponseEntity<Object> getAllImages() {
-		List<Resources> findAllImages = resourceRepo.findAll();
-		if (findAllImages.isEmpty()) {
+		BrandImagesResponseDto findAllImages = resourceService.findAllImages();
+//		List<Resources> findAllImages = resourceRepo.findAll();
+		if (findAllImages!=null) {
 			return CustomHttpResponse.responseBuilder("Images are not found", HttpStatus.OK, findAllImages);
 		}
 		return CustomHttpResponse.responseBuilder("All avilable images", HttpStatus.OK, findAllImages);
