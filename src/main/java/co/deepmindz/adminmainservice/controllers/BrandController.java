@@ -31,21 +31,25 @@ import co.deepmindz.adminmainservice.models.Resources;
 import co.deepmindz.adminmainservice.repository.ResourceRepo;
 import co.deepmindz.adminmainservice.resources.CustomHttpResponse;
 import co.deepmindz.adminmainservice.services.ResourceService;
-import co.deepmindz.adminmainservice.utils.Templates;
-
+/*  author - Neeraj Kumarr
+ * 
+ * 
+ */
 @RestController
 @RequestMapping("/admin-main/brand")
 public class BrandController {
 	@Autowired
 	private ResourceService resourceService;
+
 	@Autowired
 	private ObjectMapper objectMapper;
-	
+
 	@Autowired
 	private ResourceRepo resourceRepo;
 
 	private String FILE_PATH_ROOT = "src/main/resources/static/";
 
+	
 	@PostMapping("/app-static/upload")
 	public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file,
 			@RequestParam("type") String type) throws IOException {
@@ -57,9 +61,17 @@ public class BrandController {
 		resources2.setType(type);
 		resources2.setName(fileName);
 		resources2.setUrl(downloadUrl);
-		resourceService.save(resources2);
-
+		Resources findByType = resourceService.findByType(type);
 		Map<String, Object> response = new HashMap<>();
+
+		if (findByType == null) {
+			resourceService.save(resources2);
+			response.put("downloadUrl", downloadUrl);
+			return CustomHttpResponse.responseBuilder(type + " uploaded successfully", HttpStatus.CREATED, response);
+		}
+		String resourceId = findByType.getResourceId();
+		resources2.setResourceId(resourceId);
+		resourceService.save(resources2);
 		response.put("downloadUrl", downloadUrl);
 
 		return CustomHttpResponse.responseBuilder(type + " uploaded successfully", HttpStatus.CREATED, response);
@@ -111,7 +123,7 @@ public class BrandController {
 	public ResponseEntity<Object> viewUploadImage(@RequestParam("file") MultipartFile file,
 			@RequestParam("type") String type) throws IOException {
 		resourceService.fileUploadFuction(file, type);
-    	String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
 		String url = "/admin-main/brand/entity/view-image/" + fileName; // Adjust the URL path as needed
 		String downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path(url).toUriString();
@@ -131,21 +143,14 @@ public class BrandController {
 		return CustomHttpResponse.responseBuilder(type + " uploaded successfully", HttpStatus.CREATED, response);
 
 	}
-	
+
 	@GetMapping("/get-all-images")
-	public ResponseEntity<Object> getAllImages(){
-		 List<Resources> findAllImages = resourceRepo.findAll();
-		if (findAllImages.isEmpty()){
+	public ResponseEntity<Object> getAllImages() {
+		List<Resources> findAllImages = resourceRepo.findAll();
+		if (findAllImages.isEmpty()) {
 			return CustomHttpResponse.responseBuilder("Images are not found", HttpStatus.OK, findAllImages);
 		}
-		return CustomHttpResponse.responseBuilder("All avilable images",HttpStatus.OK, findAllImages);
+		return CustomHttpResponse.responseBuilder("All avilable images", HttpStatus.OK, findAllImages);
 	}
-		
-			
-			
-		
-		
-		
-	
 
 }

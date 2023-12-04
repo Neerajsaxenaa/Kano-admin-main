@@ -32,6 +32,7 @@ public class ResourceUtil {
 			File destinationFile = new File(fullImageDirectory, fileName);
 			file.transferTo(destinationFile);
 			String fileStatus = "File Transfer success";
+			
 
 			return CustomHttpResponse.responseBuilder(type + " uploaded successfully", HttpStatus.CREATED, fileStatus);
 		} else {

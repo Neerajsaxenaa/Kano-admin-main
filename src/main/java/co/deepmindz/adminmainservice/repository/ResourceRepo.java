@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import co.deepmindz.adminmainservice.models.Resources;
 
@@ -17,8 +18,7 @@ public interface ResourceRepo extends JpaRepository<Resources, String> {
 	List<Resources> getStaticAppResources();
 
 	
-	Resources findByType(@Param("type") String type);
-	
-	
+  @Query("SELECT r FROM Resources r WHERE r.type = :type")
+	Resources findByType(@RequestParam String type);
 	
 }

@@ -39,6 +39,11 @@ public class ResourceService {
 		return resourceUtil.fileUploadFuction(file, type);
 
 	}
+
+	public Resources findByType(String type) {
+		Resources findByType = resourceRepo.findByType(type);
+		return findByType;
+	}
 	
 
 }
