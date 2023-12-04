@@ -15,7 +15,7 @@ import co.deepmindz.adminmainservice.resources.CustomHttpResponse;
 public class ResourceUtil {
 
 	public ResponseEntity<Object> fileUploadFuction(MultipartFile file, String type) throws IOException {
-		if (type.contains("splash") || type.contains("logo")) {
+		if (type.equals(Templates.LOGO_TYPES.login_screen.name()) || type.equals(Templates.LOGO_TYPES.splash_screen.name())) {
 			String imageDirectory = "src/main/resources/static/";
 			String currentDirectory = System.getProperty("user.dir");
 			String fileName = StringUtils.cleanPath(file.getOriginalFilename());

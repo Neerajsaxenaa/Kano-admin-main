@@ -31,6 +31,7 @@ import co.deepmindz.adminmainservice.models.Resources;
 import co.deepmindz.adminmainservice.repository.ResourceRepo;
 import co.deepmindz.adminmainservice.resources.CustomHttpResponse;
 import co.deepmindz.adminmainservice.services.ResourceService;
+import co.deepmindz.adminmainservice.utils.Templates;
 
 @RestController
 @RequestMapping("/admin-main/brand")
@@ -97,7 +98,7 @@ public class BrandController {
 		try {
 
 			image = FileUtils.readFileToByteArray(new File(FILE_PATH_ROOT + filename));
-			System.out.println("file path :" + FILE_PATH_ROOT);
+//			System.out.println("file path :" + FILE_PATH_ROOT);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -106,14 +107,19 @@ public class BrandController {
 
 	}
 
-	@PostMapping("/app-static/view-image")
+	@PostMapping("/app-static/upload-image-forDesktop")
 	public ResponseEntity<Object> viewUploadImage(@RequestParam("file") MultipartFile file,
 			@RequestParam("type") String type) throws IOException {
 		resourceService.fileUploadFuction(file, type);
-		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    	String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
 		String url = "/admin-main/brand/entity/view-image/" + fileName; // Adjust the URL path as needed
 		String downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path(url).toUriString();
 		Resources resources2 = new Resources();
+//		if (type.equals(Templates.LOGO_TYPES.login_screen.name()))
+//			resources2.setType(Templates.LOGO_TYPES.login_screen.name());
+//		else
+//			resources2.setType(Templates.LOGO_TYPES.splash_screen.name());
 		resources2.setType(type);
 		resources2.setName(fileName);
 		resources2.setUrl(downloadUrl);
