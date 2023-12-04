@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -31,6 +32,7 @@ import co.deepmindz.adminmainservice.models.Resources;
 import co.deepmindz.adminmainservice.repository.ResourceRepo;
 import co.deepmindz.adminmainservice.resources.CustomHttpResponse;
 import co.deepmindz.adminmainservice.services.ResourceService;
+import co.deepmindz.adminmainservice.utils.Templates;
 /*  author - Neeraj Kumarr
  * 
  * 
@@ -122,28 +124,37 @@ public class BrandController {
 	@PostMapping("/app-static/upload-image-forDesktop")
 	public ResponseEntity<Object> viewUploadImage(@RequestParam("file") MultipartFile file,
 			@RequestParam("type") String type) throws IOException {
-		resourceService.fileUploadFuction(file, type);
+		ResponseEntity<Object> fileUploadFuction = resourceService.fileUploadFuction(file, type);
+		if (fileUploadFuction.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST)) {
+			return CustomHttpResponse.responseBuilder( "Invalid file type : " + type, HttpStatus.NOT_ACCEPTABLE, type);
+		}
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
 		String url = "/admin-main/brand/entity/view-image/" + fileName; // Adjust the URL path as needed
 		String downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path(url).toUriString();
 		Resources resources2 = new Resources();
-//		if (type.equals(Templates.LOGO_TYPES.login_screen.name()))
-//			resources2.setType(Templates.LOGO_TYPES.login_screen.name());
-//		else
-//			resources2.setType(Templates.LOGO_TYPES.splash_screen.name());
+		if (type.equals(Templates.LOGO_TYPES.login_screen.name()))
+			resources2.setType(Templates.LOGO_TYPES.login_screen.name());
+		else
+			resources2.setType(Templates.LOGO_TYPES.splash_screen.name());
 		resources2.setType(type);
 		resources2.setName(fileName);
 		resources2.setUrl(downloadUrl);
-		resourceService.save(resources2);
-
+		Resources findByType = resourceService.findByType(type);
 		Map<String, Object> response = new HashMap<>();
+
+		if (findByType == null) {
+			resourceService.save(resources2);
+			response.put("downloadUrl", downloadUrl);
+			return CustomHttpResponse.responseBuilder(type + " uploaded successfully", HttpStatus.CREATED, response);
+		}
+		String resourceId = findByType.getResourceId();
+		resources2.setResourceId(resourceId);
+		resourceService.save(resources2);
 		response.put("downloadUrl", downloadUrl);
 
 		return CustomHttpResponse.responseBuilder(type + " uploaded successfully", HttpStatus.CREATED, response);
-
 	}
-
 	@GetMapping("/get-all-images")
 	public ResponseEntity<Object> getAllImages() {
 		List<Resources> findAllImages = resourceRepo.findAll();
