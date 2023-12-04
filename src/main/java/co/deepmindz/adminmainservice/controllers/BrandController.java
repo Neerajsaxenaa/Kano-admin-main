@@ -137,7 +137,7 @@ public class BrandController {
 			resources2.setType(Templates.LOGO_TYPES.login_screen.name());
 		else
 			resources2.setType(Templates.LOGO_TYPES.splash_screen.name());
-		resources2.setType(type);
+//		resources2.setType(type);
 		resources2.setName(fileName);
 		resources2.setUrl(downloadUrl);
 		Resources findByType = resourceService.findByType(type);
