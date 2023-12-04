@@ -139,12 +139,13 @@ public class BrandController {
 			return CustomHttpResponse.responseBuilder("Images are not found", HttpStatus.OK, findAllImages);
 		}
 		return CustomHttpResponse.responseBuilder("All avilable images",HttpStatus.OK, findAllImages);
-		
-			
-			
-		
-		
-		
 	}
+		
+			
+			
+		
+		
+		
+	
 
 }
