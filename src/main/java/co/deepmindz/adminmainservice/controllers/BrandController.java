@@ -159,7 +159,6 @@ public class BrandController {
 	@GetMapping("/get-all-images")
 	public ResponseEntity<Object> getAllImages() {
 		BrandImagesResponseDto findAllImages = resourceService.findAllImages();
-//		List<Resources> findAllImages = resourceRepo.findAll();
 		if (findAllImages!=null) {
 			return CustomHttpResponse.responseBuilder("Images are not found", HttpStatus.OK, findAllImages);
 		}

@@ -13,9 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import co.deepmindz.adminmainservice.dto.BrandImagesResponseDto;
 import co.deepmindz.adminmainservice.models.Resources;
 import co.deepmindz.adminmainservice.resources.CustomHttpResponse;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Service
 public class ResourceUtil {
@@ -48,6 +45,7 @@ public class ResourceUtil {
 
 	public BrandImagesResponseDto mapEntityToResponseDto(List<Resources> findAll) {
 		return new BrandImagesResponseDto(findAll.get(0).getUrl(), findAll.get(1).getUrl());
+
 	}
 
 }
