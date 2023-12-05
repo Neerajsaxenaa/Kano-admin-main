@@ -44,6 +44,8 @@ public class ResourceUtil {
 	}
 
 	public BrandImagesResponseDto mapEntityToResponseDto(List<Resources> findAll) {
+		if (findAll.get(0).getType().equals("login_screen")) 
+			return new BrandImagesResponseDto(findAll.get(1).getUrl(), findAll.get(0).getUrl());
 		return new BrandImagesResponseDto(findAll.get(0).getUrl(), findAll.get(1).getUrl());
 
 	}
