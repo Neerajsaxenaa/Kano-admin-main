@@ -11,7 +11,8 @@ import lombok.ToString;
 @ToString
 public class BrandImagesResponseDto {
 
-	private String login_screen;
+	
 	private String splash_screen;
+	private String login_screen;
 
 }
