@@ -151,8 +151,9 @@ public class BrandController {
 		}
 		String resourceId = findByType.getResourceId();
 		resources2.setResourceId(resourceId);
-		resourceService.save(resources2);
 		response.put("downloadUrl", downloadUrl);
+		resourceService.save(resources2);
+		
 
 		return CustomHttpResponse.responseBuilder(type + " uploaded successfully", HttpStatus.CREATED, response);
 	}
