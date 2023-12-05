@@ -14,7 +14,7 @@ import co.deepmindz.adminmainservice.models.Resources;
 @Repository
 public interface ResourceRepo extends JpaRepository<Resources, String> {
 
-	@Query("SELECT r FROM Resources r WHERE r.type IN ('splash', 'logo')")
+	@Query("SELECT r FROM Resources r WHERE r.type IN ('splash_screen', 'login_screen')")
 	List<Resources> getStaticAppResources();
 
 	
