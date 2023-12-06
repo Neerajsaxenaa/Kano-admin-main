@@ -21,10 +21,11 @@ public class ResourceUtil {
 	public ResponseEntity<Object> fileUploadFuction(MultipartFile file, String type) throws IOException {
 		if (type.equals(Templates.LOGO_TYPES.login_screen.name())
 				|| type.equals(Templates.LOGO_TYPES.splash_screen.name())) {
-			
+
 			if (!isValidLogoType(type)) {
-		        return CustomHttpResponse.responseBuilder("Invalid file type: " + type, HttpStatus.NOT_ACCEPTABLE, type);
-		    }
+				return CustomHttpResponse.responseBuilder("Invalid file type: " + type, HttpStatus.NOT_ACCEPTABLE,
+						type);
+			}
 			String imageDirectory = "src/main/resources/static/";
 			String currentDirectory = System.getProperty("user.dir");
 			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -49,38 +50,23 @@ public class ResourceUtil {
 	}
 
 	public BrandImagesResponseDto mapEntityToResponseDto(List<Resources> findAll) {
-		 
-		if (findAll==null) {
+
+		if (findAll == null) {
 			return null;
 		}
-		
-		if (findAll.size() == 1) {
-			 if((findAll.get(0).getType().equals("splash_screen"))) {
-	        return new BrandImagesResponseDto(findAll.get(0).getUrl(), null);
-			 }else if ((findAll.get(0).getType().equals("login_screen"))) {
-	        return new BrandImagesResponseDto(null, findAll.get(0).getUrl());
-	    
-			 } }else if (findAll.size() >= 2){
-			 
-		    	
-		    	if ((findAll.get(1).getType().equals("login_screen")) || findAll.get(0).getType().equals("splash_screen")){
-			return new BrandImagesResponseDto(findAll.get(1).getUrl(), findAll.get(0).getUrl());
+		BrandImagesResponseDto responseDto = new BrandImagesResponseDto();
+		for (Resources resource : findAll) {
+			if (resource.getType().equals(Templates.LOGO_TYPES.login_screen.name()))
+				responseDto.setLogin_screen(resource.getUrl());
+
+			if (resource.getType().equals(Templates.LOGO_TYPES.splash_screen.name()))
+				responseDto.setSplash_screen(resource.getUrl());
+		}
+		return responseDto;
 	}
 
-			 }
-	    		return new BrandImagesResponseDto(findAll.get(1).getUrl(), findAll.get(0).getUrl());
-
-	
-	}
-	
 	private boolean isValidLogoType(String type) {
-	    return Arrays.stream(Templates.LOGO_TYPES.values())
-	            .anyMatch(enumValue -> enumValue.name().equals(type));
-	}
-	
+		return Arrays.stream(Templates.LOGO_TYPES.values()).anyMatch(enumValue -> enumValue.name().equals(type));
 	}
 
-
-	
-
-
+}
