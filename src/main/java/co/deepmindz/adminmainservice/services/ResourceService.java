@@ -48,6 +48,9 @@ public class ResourceService {
 
 	public BrandImagesResponseDto findAllImages() {
 		List<Resources> findAll = resourceRepo.findAll();
+		if (findAll==null || findAll.isEmpty()) {
+			return null;
+		}
 		BrandImagesResponseDto brandImagesResponseDto = resourceUtil.mapEntityToResponseDto(findAll);
 		return brandImagesResponseDto;
 		
