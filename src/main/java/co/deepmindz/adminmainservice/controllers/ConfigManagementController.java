@@ -19,7 +19,7 @@ public class ConfigManagementController {
 	private ConfigurationService configurationService;
 	
 	@PostMapping("/set-config-management")
-	public ConfigurationManagement setConfigManagement( @RequestBody ConfigManagementRequestDto dto) {
+	public ConfigurationManagement setConfigManagement(@Valid @RequestBody ConfigManagementRequestDto dto) {
 		return  configurationService.setConfigManagement(dto);
 	}
 

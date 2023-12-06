@@ -12,7 +12,7 @@ public class configUtil {
 		ConfigurationManagement configurationManagement = new ConfigurationManagement();
 		configurationManagement.setServiceId(dto.getServiceId());
 		configurationManagement.setSubService(dto.getSubService());
-		configurationManagement.setOrgServiceStatus(dto.getOrgServiceStatus());
+		configurationManagement.setStatus(dto.getStatus());
 		return configurationManagement;
 	}
 

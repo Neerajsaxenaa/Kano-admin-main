@@ -11,11 +11,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class ConfigManagementRequestDto {
-	
+
 	private String serviceId;
 	private String subService;
-	
+
 //	@NotNull
-	private Boolean  orgServiceStatus;	
+	private Boolean status;
 
 }
