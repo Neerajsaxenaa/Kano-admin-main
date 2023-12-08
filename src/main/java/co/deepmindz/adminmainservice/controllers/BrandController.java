@@ -129,6 +129,7 @@ public class BrandController {
 		if (fileUploadFuction.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST)) {
 			return CustomHttpResponse.responseBuilder( "Invalid file type : " + type, HttpStatus.NOT_ACCEPTABLE, type);
 		}
+		
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
 		String url = "/admin-main/brand/entity/view-image/" + fileName; // Adjust the URL path as needed
@@ -138,6 +139,7 @@ public class BrandController {
 			resources2.setType(Templates.LOGO_TYPES.login_screen.name());
 		else
 			resources2.setType(Templates.LOGO_TYPES.splash_screen.name());
+		
 //		resources2.setType(type);
 		resources2.setName(fileName);
 		resources2.setUrl(downloadUrl);
@@ -160,10 +162,10 @@ public class BrandController {
 	@GetMapping("/get-all-images")
 	public ResponseEntity<Object> getAllImages() {
 		BrandImagesResponseDto findAllImages = resourceService.findAllImages();
-		if (findAllImages==null) {
-			return CustomHttpResponse.responseBuilder("Images are not found", HttpStatus.OK, findAllImages);
+		if(findAllImages==null) {
+			return CustomHttpResponse.responseBuilder("images are not found", HttpStatus.OK, findAllImages);
 		}
-		return CustomHttpResponse.responseBuilder("All avilable images", HttpStatus.OK, findAllImages);
+		return CustomHttpResponse.responseBuilder("All available images are ", HttpStatus.OK, findAllImages);
 	}
 
 }
