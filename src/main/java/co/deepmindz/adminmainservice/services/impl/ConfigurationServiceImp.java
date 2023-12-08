@@ -1,5 +1,7 @@
 package co.deepmindz.adminmainservice.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,7 @@ public class ConfigurationServiceImp implements ConfigurationService {
 	private configUtil configUtil;
 
 	@Override
-	public ConfigurationManagement setConfigManagement( ConfigManagementRequestDto dto) {
+	public ConfigurationManagement setConfigManagement(ConfigManagementRequestDto dto) {
 		ConfigurationManagement configurationManagement = null;
 		ConfigurationManagement configFoundInDB = getConfig(dto);
 		configurationManagement = configUtil.mapDtoToEntity(dto);
@@ -32,7 +34,15 @@ public class ConfigurationServiceImp implements ConfigurationService {
 
 	@Override
 	public ConfigurationManagement getConfig(ConfigManagementRequestDto dto) {
-		return configRepository.findByService(dto.getConfiguration());
+		ConfigurationManagement findByService = configRepository.findByService(dto.getConfiguration());
+
+		return findByService;
+
+	}
+
+	@Override
+	public List<ConfigurationManagement> getAllConfig() {
+		return  configRepository.findAll();
 	}
 
 }

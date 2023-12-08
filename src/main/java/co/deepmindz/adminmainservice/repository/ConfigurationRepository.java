@@ -10,8 +10,8 @@ import co.deepmindz.adminmainservice.models.ConfigurationManagement;
 @Repository
 public interface ConfigurationRepository extends JpaRepository<ConfigurationManagement, String> {
 
-	@Query("select c from ConfigurationManagement c where c.configuration = :sub_service")
-	ConfigurationManagement findByService(@RequestParam String sub_service);
+	@Query("select c from ConfigurationManagement c where c.configuration = :getConfiguration")
+	 ConfigurationManagement findByService(@RequestParam String getConfiguration);
 
 }
 
