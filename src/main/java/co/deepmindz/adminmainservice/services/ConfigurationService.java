@@ -8,6 +8,8 @@ import co.deepmindz.adminmainservice.models.ConfigurationManagement;
 @Service
 public interface ConfigurationService {
 
-	ConfigurationManagement setConfigManagement(ConfigManagementRequestDto dto);
+	ConfigurationManagement setConfigManagement(ConfigManagementRequestDto status);
+
+	ConfigurationManagement getConfig(ConfigManagementRequestDto dto);
 
 }

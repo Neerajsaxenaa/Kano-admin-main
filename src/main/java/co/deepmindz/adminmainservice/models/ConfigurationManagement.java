@@ -4,6 +4,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +19,10 @@ public class ConfigurationManagement {
 
 	@Id
 	@UuidGenerator
-	private String managementId;
-	private String serviceId;
-	private String subService;
-	private Boolean status;
+	private String id;
+	private String configuration;
+	
+	@NotNull
+	private boolean locked;
 
 }

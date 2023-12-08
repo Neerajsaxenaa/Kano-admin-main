@@ -10,9 +10,8 @@ public class configUtil {
 
 	public ConfigurationManagement mapDtoToEntity(ConfigManagementRequestDto dto) {
 		ConfigurationManagement configurationManagement = new ConfigurationManagement();
-		configurationManagement.setServiceId(dto.getServiceId());
-		configurationManagement.setSubService(dto.getSubService());
-		configurationManagement.setStatus(dto.getStatus());
+		configurationManagement.setConfiguration(dto.getConfiguration());
+		configurationManagement.setLocked(dto.isLocked());
 		return configurationManagement;
 	}
 

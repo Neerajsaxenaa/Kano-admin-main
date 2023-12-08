@@ -6,18 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ConfigManagementRequestDto {
+public class SSUserRequestDto {
 
-	private String id;
-
-	@NotNull
-	private String configuration;
+	private String serviceId;
+	private String subService;
 
 	@NotNull
-	private boolean locked;
+	private Boolean status;
 
 }
