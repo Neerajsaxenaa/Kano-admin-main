@@ -20,7 +20,7 @@ public class ConfigManagementController {
 	@Autowired
 	private ConfigurationService configurationService;
 
-	@PostMapping("/set-config-management")
+	@PostMapping("/set-configuration")
 	public ResponseEntity<Object> setConfigManagement(@Valid @RequestBody ConfigManagementRequestDto dto) {
 		return CustomHttpResponse.responseBuilder("Configuration has been locked", HttpStatus.OK,
 				configurationService.setConfigManagement(dto));

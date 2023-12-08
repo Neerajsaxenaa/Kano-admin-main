@@ -16,6 +16,10 @@ public class Templates {
 	public enum LOGO_TYPES {
 		splash_screen, login_screen
 	}
+	
+	public enum CONFIGURATION {
+		org_hierarchy, admin_main
+	}
 
 	public static ParameterizedTypeReference<Map<String, String>> responseTypeForRestAPICall = new ParameterizedTypeReference<>() {
 	};
