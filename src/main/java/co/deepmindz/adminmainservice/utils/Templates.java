@@ -20,6 +20,10 @@ public class Templates {
 	public enum CONFIGURATION {
 		org_hierarchy, admin_main
 	}
+	
+	public enum TEAMMEMBERSLIMIT {
+		issState, issZone, issLga
+	}
 
 	public static ParameterizedTypeReference<Map<String, String>> responseTypeForRestAPICall = new ParameterizedTypeReference<>() {
 	};

@@ -52,4 +52,16 @@ public class CustomDataTypes {
 		}
 	}
 
+	static public class memberLimitObj {
+		public String ISS_STATE;
+		public String ISS_ZONES;
+		public String ISS_LGA;
+
+		public memberLimitObj(String ISS_STATE, String ISS_ZONES, String ISS_LGA) {
+			this.ISS_STATE = ISS_STATE;
+			this.ISS_ZONES = ISS_ZONES;
+			this.ISS_LGA = ISS_LGA;
+		}
+	}
+
 }

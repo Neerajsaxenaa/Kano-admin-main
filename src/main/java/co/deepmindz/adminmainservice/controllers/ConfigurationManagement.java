@@ -8,6 +8,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -34,6 +36,8 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+
+@PropertySource(ignoreResourceNotFound = true, value = "classpath:app.properties")
 @RestController
 @RequestMapping("/admin-main/config")
 public class ConfigurationManagement {
@@ -52,6 +56,16 @@ public class ConfigurationManagement {
 
 	@Autowired
 	ThemeService themeService;
+	
+	
+	@Value("${state_limit}")
+	private String state_limit;
+	
+	@Value("${zones_limit}")
+	private String zones_limit;
+	
+	@Value("${lga_limit}")
+	private String lga_limit;
 
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
@@ -60,6 +74,8 @@ public class ConfigurationManagement {
 		this.restTemplate = restTemplate;
 		this.objectMapper = objectMapper;
 	}
+	
+	
 
 //    @PostMapping("/add-service")
 //    public ResponseEntity<Object> addService(@Valid @RequestBody co.deepmindz.adminmainservice.models.ConfigurationManagement configurationManagement) {
@@ -83,6 +99,8 @@ public class ConfigurationManagement {
 		List<CustomDataTypes.valueObj> result = languageService.getSupportedLanguageList();
 		Map<String, String> appStatics = getStringStringMap();
 		response.put("currentLoginModeStatus", currentLoginModeStatus);
+//		new  CustomDataTypes.memberLimitObj(state_limit, zones_limit, lga_limit);
+		response.put("teamMembersLimit", new CustomDataTypes.memberLimitObj(state_limit, zones_limit, lga_limit));
 		response.put("currentTheme", currentThemesSetting);
 		response.put("supportedLanguage", result);
 		response.put("appStatics", appStatics);
@@ -133,6 +151,9 @@ public class ConfigurationManagement {
 		loginModeService.resetLoginMode();
 		return CustomHttpResponse.responseBuilder("LoginMode has been reset", HttpStatus.OK, "/reset-login-mode");
 	}
+	
+	
+	
 
 //    @DeleteMapping("/clean-literals")
 //    public ResponseEntity<Object> cleanLiterals() {
