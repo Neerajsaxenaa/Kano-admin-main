@@ -31,10 +31,12 @@ public class CustomDataTypes {
 	}
 
 	static public class valueObj {
+		public String id;
 		public String lang;
 		public String value;
 
-		public valueObj(String lang, String value) {
+		public valueObj(String id, String lang, String value) {
+			this.id = id;
 			this.lang = lang;
 			this.value = value;
 		}

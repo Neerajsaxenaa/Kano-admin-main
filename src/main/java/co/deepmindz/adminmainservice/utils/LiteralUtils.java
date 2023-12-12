@@ -48,7 +48,7 @@ public class LiteralUtils {
     	List<valueObj> list = new ArrayList<>();
     	for(String litral : literal.getLiteralsinAllSupportedLanguage()) {
     		String[] tok = litral.split(":");
-    		list.add(new valueObj(idWithLanguageNameMap.get(tok[0]),tok[1]));    		
+    		list.add(new valueObj(idWithLanguageNameMap.get(tok[0]),tok[1], ""));    		
     	}
     	responseDto.setLiterals(list.toArray(new valueObj[list.size()]));
     	

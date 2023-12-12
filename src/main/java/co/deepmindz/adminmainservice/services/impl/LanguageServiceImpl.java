@@ -84,7 +84,7 @@ public class LanguageServiceImpl implements LanguageService {
 	public List<valueObj> getSupportedLanguageList() {
 		List<valueObj> allsupportedLanguages = new ArrayList<>();
 		for (Languages lang : languageRepository.findAll()) {
-			allsupportedLanguages.add(new valueObj(lang.getLanguaeName(), lang.getLanguageInNative()));
+			allsupportedLanguages.add(new valueObj(lang.getLanguageID().toString(), lang.getLanguaeName(), lang.getLanguageInNative()));
 		}
 		return allsupportedLanguages;
 	}
