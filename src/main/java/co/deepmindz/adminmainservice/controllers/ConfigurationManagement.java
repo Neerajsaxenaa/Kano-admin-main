@@ -85,7 +85,7 @@ public class ConfigurationManagement {
 
 	public Map<String, String> getVisitModeConfigurations() {
 		RequestEntity<Void> request = RequestEntity
-				.get(Templates.ALLSERVICES.visit.toString() + "/visits/flw/get-visit-configuration")
+				.get(Templates.ALLSERVICES.visit_service.toString() + "/visits/flw/get-visit-configuration")
 				.accept(MediaType.APPLICATION_JSON).build();
 		return restTemplate.exchange(request, Templates.responseTypeForRestAPICall).getBody();
 	}
@@ -99,7 +99,7 @@ public class ConfigurationManagement {
 		List<CustomDataTypes.valueObj> result = languageService.getSupportedLanguageList();
 		Map<String, String> appStatics = getStringStringMap();
 		response.put("currentLoginModeStatus", currentLoginModeStatus);
-//		new  CustomDataTypes.memberLimitObj(state_limit, zones_limit, lga_limit);
+		new  CustomDataTypes.memberLimitObj(state_limit, zones_limit, lga_limit);
 		response.put("teamMembersLimit", new CustomDataTypes.memberLimitObj(state_limit, zones_limit, lga_limit));
 		response.put("currentTheme", currentThemesSetting);
 		response.put("supportedLanguage", result);

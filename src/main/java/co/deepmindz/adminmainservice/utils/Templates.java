@@ -41,7 +41,7 @@ public class Templates {
 			}
 		},
 
-		visit {
+		visit_service {
 			public String toString() {
 				return "http://ss-visit-service";
 			}
