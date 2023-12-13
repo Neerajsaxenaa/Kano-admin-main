@@ -34,7 +34,6 @@ import co.deepmindz.adminmainservice.utils.CustomDataTypes.themes;
 import co.deepmindz.adminmainservice.utils.Templates;
 
 import org.springframework.web.client.RestTemplate;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 
