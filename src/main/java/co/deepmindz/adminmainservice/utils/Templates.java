@@ -22,7 +22,7 @@ public class Templates {
 	}
 	
 	public enum TEAMMEMBERSLIMIT {
-		issState, issZone, issLga
+		ISS_STATE, ISS_ZONAL, ISS_LGA
 	}
 
 	public static ParameterizedTypeReference<Map<String, String>> responseTypeForRestAPICall = new ParameterizedTypeReference<>() {

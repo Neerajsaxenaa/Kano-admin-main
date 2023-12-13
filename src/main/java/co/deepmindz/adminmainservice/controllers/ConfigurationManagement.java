@@ -1,6 +1,7 @@
 package co.deepmindz.adminmainservice.controllers;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,14 +59,14 @@ public class ConfigurationManagement {
 	ThemeService themeService;
 	
 	
-	@Value("${state_limit}")
-	private String state_limit;
+	@Value("${ISS_STATE_LIMIT}")
+	private String iss_state_limit;
 	
-	@Value("${zones_limit}")
-	private String zones_limit;
+	@Value("${ISS_ZONAL_LIMIT}")
+	private String iss_zonal_limit;
 	
-	@Value("${lga_limit}")
-	private String lga_limit;
+	@Value("${ISS_LGA_LIMIT}")
+	private String iss_lga_limit;
 
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
@@ -92,15 +93,15 @@ public class ConfigurationManagement {
 
 	@GetMapping("/get-configurations")
 	public ResponseEntity<Object> primary() throws JsonProcessingException {
-		Map<String, Object> response = new HashMap<>();
+		Map<String, Object> response = new LinkedHashMap<>();
 		LoginModeStatusDto currentLoginModeStatus = loginModeService.getCurrentConfig();
 		List<themes> currentThemesSetting = themeService.getCurrentThemeSetting();
 		Map<String, String> visitModeConfiguration = getVisitModeConfigurations();
 		List<CustomDataTypes.valueObj> result = languageService.getSupportedLanguageList();
 		Map<String, String> appStatics = getStringStringMap();
 		response.put("currentLoginModeStatus", currentLoginModeStatus);
-		new  CustomDataTypes.memberLimitObj(state_limit, zones_limit, lga_limit);
-		response.put("teamMembersLimit", new CustomDataTypes.memberLimitObj(state_limit, zones_limit, lga_limit));
+		new  CustomDataTypes.memberLimitObj(iss_state_limit, iss_zonal_limit, iss_lga_limit);
+		response.put("rolesVisitConfig", new CustomDataTypes.memberLimitObj(iss_state_limit, iss_zonal_limit, iss_lga_limit));
 		response.put("currentTheme", currentThemesSetting);
 		response.put("supportedLanguage", result);
 		response.put("appStatics", appStatics);
