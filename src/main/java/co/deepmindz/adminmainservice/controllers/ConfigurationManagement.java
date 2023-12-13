@@ -5,9 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -15,11 +12,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.deepmindz.adminmainservice.dto.LoginModeStatusDto;
 import co.deepmindz.adminmainservice.models.Resources;
@@ -32,10 +33,6 @@ import co.deepmindz.adminmainservice.services.ThemeService;
 import co.deepmindz.adminmainservice.utils.CustomDataTypes;
 import co.deepmindz.adminmainservice.utils.CustomDataTypes.themes;
 import co.deepmindz.adminmainservice.utils.Templates;
-
-import org.springframework.web.client.RestTemplate;
-import com.fasterxml.jackson.core.type.TypeReference;
-
 
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:app.properties")
 @RestController
@@ -56,14 +53,13 @@ public class ConfigurationManagement {
 
 	@Autowired
 	ThemeService themeService;
-	
-	
+
 	@Value("${ISS_STATE_LIMIT}")
 	private String iss_state_limit;
-	
+
 	@Value("${ISS_ZONAL_LIMIT}")
 	private String iss_zonal_limit;
-	
+
 	@Value("${ISS_LGA_LIMIT}")
 	private String iss_lga_limit;
 
@@ -74,8 +70,6 @@ public class ConfigurationManagement {
 		this.restTemplate = restTemplate;
 		this.objectMapper = objectMapper;
 	}
-	
-	
 
 //    @PostMapping("/add-service")
 //    public ResponseEntity<Object> addService(@Valid @RequestBody co.deepmindz.adminmainservice.models.ConfigurationManagement configurationManagement) {
@@ -89,7 +83,6 @@ public class ConfigurationManagement {
 				.accept(MediaType.APPLICATION_JSON).build();
 		return restTemplate.exchange(request, Templates.responseTypeForRestAPICall).getBody();
 	}
-	
 
 	@GetMapping("/get-configurations")
 	public ResponseEntity<Object> primary() throws JsonProcessingException {
@@ -100,8 +93,9 @@ public class ConfigurationManagement {
 		List<CustomDataTypes.valueObj> result = languageService.getSupportedLanguageList();
 		Map<String, String> appStatics = getStringStringMap();
 		response.put("currentLoginModeStatus", currentLoginModeStatus);
-		new  CustomDataTypes.memberLimitObj(iss_state_limit, iss_zonal_limit, iss_lga_limit);
-		response.put("rolesVisitConfig", new CustomDataTypes.memberLimitObj(iss_state_limit, iss_zonal_limit, iss_lga_limit));
+		new CustomDataTypes.memberLimitObj(iss_state_limit, iss_zonal_limit, iss_lga_limit);
+		response.put("rolesVisitConfig",
+				new CustomDataTypes.memberLimitObj(iss_state_limit, iss_zonal_limit, iss_lga_limit));
 		response.put("currentTheme", currentThemesSetting);
 		response.put("supportedLanguage", result);
 		response.put("appStatics", appStatics);
@@ -152,9 +146,6 @@ public class ConfigurationManagement {
 		loginModeService.resetLoginMode();
 		return CustomHttpResponse.responseBuilder("LoginMode has been reset", HttpStatus.OK, "/reset-login-mode");
 	}
-	
-	
-	
 
 //    @DeleteMapping("/clean-literals")
 //    public ResponseEntity<Object> cleanLiterals() {
