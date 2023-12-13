@@ -63,19 +63,8 @@ public class ConfigurationManagement {
 	@Value("${ISS_LGA_LIMIT}")
 	private String iss_lga_limit;
 
-	private final RestTemplate restTemplate;
-	private final ObjectMapper objectMapper;
-
-	public ConfigurationManagement(RestTemplate restTemplate, ObjectMapper objectMapper) {
-		this.restTemplate = restTemplate;
-		this.objectMapper = objectMapper;
-	}
-
-//    @PostMapping("/add-service")
-//    public ResponseEntity<Object> addService(@Valid @RequestBody co.deepmindz.adminmainservice.models.ConfigurationManagement configurationManagement) {
-//        configurationService.addService(configurationManagement);
-//        return CustomHttpResponse.responseBuilder("Service Created At Configuration Level", HttpStatus.CREATED, "configurationManagement");
-//    }
+	@Autowired
+	private RestTemplate restTemplate;
 
 	public Map<String, String> getVisitModeConfigurations() {
 		RequestEntity<Void> request = RequestEntity
