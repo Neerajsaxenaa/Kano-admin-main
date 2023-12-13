@@ -90,6 +90,7 @@ public class ConfigurationManagement {
 				.accept(MediaType.APPLICATION_JSON).build();
 		return restTemplate.exchange(request, Templates.responseTypeForRestAPICall).getBody();
 	}
+	
 
 	@GetMapping("/get-configurations")
 	public ResponseEntity<Object> primary() throws JsonProcessingException {
