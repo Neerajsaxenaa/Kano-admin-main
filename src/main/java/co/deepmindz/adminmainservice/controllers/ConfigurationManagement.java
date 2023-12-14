@@ -54,13 +54,13 @@ public class ConfigurationManagement {
 	@Autowired
 	ThemeService themeService;
 
-	@Value("${iss_state_limit}")
+	@Value("${ISS_STATE_LIMIT}")
 	private String iss_state_limit;
 
-	@Value("${iss_zonal_limit}")
+	@Value("${ISS_ZONAL_LIMIT}")
 	private String iss_zonal_limit;
 
-	@Value("${iss_lga_limit}")
+	@Value("${ISS_LGA_LIMIT}")
 	private String iss_lga_limit;
 
 	@Autowired
