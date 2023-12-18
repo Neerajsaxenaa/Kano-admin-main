@@ -1,6 +1,7 @@
 package co.deepmindz.adminmainservice.controllers;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,9 +37,12 @@ public class AdminUserManagement {
     public ResponseEntity<Object> createAdminUser(@Valid @RequestBody AdminDto admin) {
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         AdminDto savedAdminDto = adminService.createAdmin(admin);
-        Map<String, Object> response = new HashMap<>();
-        response.put("UserId",savedAdminDto.getUserId());
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("name",savedAdminDto.getName());
         response.put("Username",savedAdminDto.getUserName());
+        response.put("UserId",savedAdminDto.getUserId());
+        
+        
         return  CustomHttpResponse.responseBuilder("Admin User has been created", HttpStatus.CREATED, response);
     }
     @GetMapping("{id}")
