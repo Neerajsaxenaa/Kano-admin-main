@@ -41,10 +41,9 @@ public class AdminUserManagement {
         response.put("name",savedAdminDto.getName());
         response.put("Username",savedAdminDto.getUserName());
         response.put("UserId",savedAdminDto.getUserId());
-        
-        
         return  CustomHttpResponse.responseBuilder("Admin User has been created", HttpStatus.CREATED, response);
     }
+    
     @GetMapping("{id}")
     public ResponseEntity<Object> getAdminUser(@PathVariable("id") String adminId, @RequestHeader("loggedInUser") List username) {
         AdminDto savedAdminDto = adminService.getAdminById(adminId);
