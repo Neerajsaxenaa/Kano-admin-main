@@ -69,22 +69,33 @@ public class LanguageServiceImpl implements LanguageService {
 //		newLanObj.setLanguageID(2);
 
 		Languages newLanguage = languageRepository.save(newLanObj);
-
+		List<Literals> literalsList = new ArrayList<>();
 		for (keyValuePair pair : newLanguageData.getLiterals()) {
-			List<String> literalInAllLangs = new ArrayList<>();
-			literalInAllLangs
-					.addAll(List.of(literalIDWithLiteralMap.get(pair.key).getLiteralsinAllSupportedLanguage()));
-			literalInAllLangs.add(newLanguage.getLanguageID() + ":" + pair.value);
 
-			literalsRepository.updateLiteralsWithNewLanguage(
-					literalInAllLangs.toArray(new String[literalInAllLangs.size()]), pair.key);
+			if (literalIDWithLiteralMap.get(pair.key) != null) {
+				List<String> literalInAllLangs = new ArrayList<>();
+				literalInAllLangs
+						.addAll(List.of(literalIDWithLiteralMap.get(pair.key).getLiteralsinAllSupportedLanguage()));
+				literalInAllLangs.add(newLanguage.getLanguageID() + ":" + pair.value);
+				literalsRepository.updateLiteralsWithNewLanguage(
+						literalInAllLangs.toArray(new String[literalInAllLangs.size()]), pair.key);
+			} else {
+				Literals obj = new Literals();
+				obj.setLiteralID(pair.key);
+				obj.setLiteral(pair.value);
+				obj.setLiteralsinAllSupportedLanguage(new String[] { newLanguage.getLanguageID() + ":" + pair.value });
+				literalsList.add(obj);
+			}
 		}
+		if (!literalsList.isEmpty())
+			literalsRepository.saveAll(literalsList);
 	}
 
 	public List<valueObj> getSupportedLanguageList() {
 		List<valueObj> allsupportedLanguages = new ArrayList<>();
 		for (Languages lang : languageRepository.findAll()) {
-			allsupportedLanguages.add(new valueObj(lang.getLanguageID().toString(), lang.getLanguaeName(), lang.getLanguageInNative()));
+			allsupportedLanguages.add(
+					new valueObj(lang.getLanguageID().toString(), lang.getLanguaeName(), lang.getLanguageInNative()));
 		}
 		return allsupportedLanguages;
 	}
