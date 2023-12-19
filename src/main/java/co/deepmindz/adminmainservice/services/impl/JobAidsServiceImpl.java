@@ -33,20 +33,16 @@ public class JobAidsServiceImpl implements JobAidsService {
 	@Autowired
 	JobAidsUtil jobAidsUtil;
 
-	
-
 	@Override
 	public ResponseEntity<Resource> downloadFile(String filename) {
 		return jobAidsUtil.downloadFile(filename);
 
 	}
-	
-	
 
 	@Override
 	public List<JobAidsResponse> getAllJobAidsByRoleId(String role_id) {
 		List<JobAids> alljobAids = jobAidsRepository.getAllJobAidsByRoleId(role_id);
-		if (alljobAids.isEmpty()) {
+		if (alljobAids == null) {
 			return null;
 		}
 		return jobAidsUtil.mapRequestDtoToEntityById(alljobAids);
@@ -77,10 +73,12 @@ public class JobAidsServiceImpl implements JobAidsService {
 	}
 
 	@Override
-	public List<JobAidsResponse> updateJobAidsByRoleId(List<JobAidsResponse> jobAidsByRoleId, JobAidsRequestDto saveFile){
+	public List<JobAidsResponse> updateJobAidsByRoleId(List<JobAidsResponse> jobAidsByRoleId,
+			JobAidsRequestDto saveFile) {
 		Optional<JobAids> findById = jobAidsRepository.findById(jobAidsByRoleId.get(0).getJobid());
 		if (findById != null) {
-			List<JobAidsResponse> updateJobAidsByRoleId = (List<JobAidsResponse>) jobAidsUtil.updateJobAidsByRoleId(jobAidsByRoleId, saveFile);
+			List<JobAidsResponse> updateJobAidsByRoleId = (List<JobAidsResponse>) jobAidsUtil
+					.updateJobAidsByRoleId(jobAidsByRoleId, saveFile);
 			return updateJobAidsByRoleId;
 		} else {
 			return null;
@@ -89,8 +87,9 @@ public class JobAidsServiceImpl implements JobAidsService {
 
 	public ResponseEntity<byte[]> getImage(@PathVariable("filename") String filename) {
 		return jobAidsUtil.getImage(filename);
-		
+
 	}
+
 	@Override
 	public JobAidsResponse createJob(JobAidsRequestDto dto) throws IllegalStateException, IOException {
 		JobAids jobAids = jobAidsUtil.mapRequestDtoToEntity(dto);
@@ -99,18 +98,5 @@ public class JobAidsServiceImpl implements JobAidsService {
 				createJobAids.getRead_duration(), createJobAids.getProfile_img(), createJobAids.getContent_type(),
 				createJobAids.getContent());
 	}
-
-
-
-	
-
-	
-
-
-	
-	
-
-	
-	
 
 }

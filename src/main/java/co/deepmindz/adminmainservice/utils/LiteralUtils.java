@@ -11,48 +11,53 @@ import co.deepmindz.adminmainservice.models.Literals;
 import co.deepmindz.adminmainservice.utils.CustomDataTypes.valueObj;
 
 public class LiteralUtils {
-    private String id;
-    private String value;
+	private String id;
+	private String value;
 
-    public LiteralUtils(String id, String value) {
-        this.id = id;
-        this.value = value;
-    }
+	public LiteralUtils(String id, String value) {
+		this.id = id;
+		this.value = value;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	public String getValue() {
+		return value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-    
-    
-    public static EditLiteralDto mapEntityToRequestDto(Literals literal, List<Languages> languages) {
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    	Map<String, String> idWithLanguageNameMap = new HashMap<>();
-    	for(Languages lang: languages)
-    		idWithLanguageNameMap.put(String.valueOf( lang.getLanguageID()), lang.getLanguaeName());
-    	
-    	EditLiteralDto responseDto = new EditLiteralDto(); 
-    	responseDto.setLiteralID(literal.getLiteralID());
-    	responseDto.setNewLiteral(literal.getLiteral());
-    	List<valueObj> list = new ArrayList<>();
-    	for(String litral : literal.getLiteralsinAllSupportedLanguage()) {
-    		String[] tok = litral.split(":");
-    		list.add(new valueObj(idWithLanguageNameMap.get(tok[0]),tok[1], ""));    		
-    	}
-    	responseDto.setLiterals(list.toArray(new valueObj[list.size()]));
-    	
-    	return responseDto;
-    }
-    
+	public static EditLiteralDto mapEntityToRequestDto(Literals literal, List<Languages> languages) {
+
+		Map<String, String> idWithLanguageNameMap = new HashMap<>();
+		for (Languages lang : languages)
+			idWithLanguageNameMap.put(String.valueOf(lang.getLanguageID()), lang.getLanguaeName());
+
+		EditLiteralDto responseDto = new EditLiteralDto();
+		responseDto.setLiteralID(literal.getLiteralID());
+		responseDto.setNewLiteral(literal.getLiteral());
+
+		List<valueObj> list = new ArrayList<>();
+		for (String litral : literal.getLiteralsinAllSupportedLanguage()) {
+			String[] tok = litral.split(":");
+
+			list.add(new valueObj(tok[0], idWithLanguageNameMap.get(tok[0]), tok[1]));
+//    		list.add(new valueObj(tok[0],tok[1],"")); 
+
+		}
+
+		responseDto.setLiterals(list.toArray(new valueObj[list.size()]));
+
+		return responseDto;
+
+	}
+
 }

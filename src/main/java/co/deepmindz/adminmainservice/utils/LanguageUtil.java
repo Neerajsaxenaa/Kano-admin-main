@@ -45,10 +45,11 @@ public class LanguageUtil {
 				if (tempdata.get("data").get(dbRow.getLiteralID()) == null) {
 					tempdata.get("data").put(dbRow.getLiteralID(), new ArrayList<>());
 					tempdata.get("data").get(dbRow.getLiteralID()).add(
-							new valueObj(languageIDMap.get(Integer.valueOf(langLiteral[0])).getLanguaeName(), langLiteral[1], ""));
+							new valueObj(langLiteral[0],languageIDMap.get(Integer.valueOf(langLiteral[0])).getLanguaeName(),langLiteral[1]));
+							
 				} else {
 					tempdata.get("data").get(dbRow.getLiteralID()).add(
-							new valueObj(languageIDMap.get(Integer.valueOf(langLiteral[0])).getLanguaeName(), langLiteral[1], ""));
+							new valueObj(langLiteral[0],languageIDMap.get(Integer.valueOf(langLiteral[0])).getLanguaeName(), langLiteral[1]));
 				}
 			}
 		}
