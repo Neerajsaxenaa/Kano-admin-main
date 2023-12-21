@@ -73,14 +73,6 @@ public class ConfigurationManagement {
 		return restTemplate.exchange(request, Templates.responseTypeForRestAPICall).getBody();
 	}
 
-	public Map<String, String> getZonesDetails() {
-		String zonesUrlString = Templates.ALLSERVICES.admin_org.toString()
-				+ "/organization/zone/get-all-zones-forRestCall";
-		RequestEntity<Void> request = RequestEntity.get(zonesUrlString).accept(MediaType.APPLICATION_JSON).build();
-		return restTemplate.exchange(request, Templates.responseTypeForRestAPICall).getBody();
-
-	}
-
 	@GetMapping("/get-configurations")
 	public ResponseEntity<Object> primary() throws JsonProcessingException {
 		Map<String, Object> response = new LinkedHashMap<>();
@@ -102,7 +94,7 @@ public class ConfigurationManagement {
 		else {
 			response.put("teamsVisitConfigured", false);
 		}
-		String serviceUrl = Templates.ALLSERVICES.visit_service.toString()+ "/visits/monthly-planner/get-weekend";
+		String serviceUrl = Templates.ALLSERVICES.visit_service.toString() + "/visits/monthly-planner/get-weekend";
 
 		String responseString = restTemplate.getForObject(serviceUrl, String.class);
 		List<Object> objects = List.of(responseString);
@@ -111,9 +103,6 @@ public class ConfigurationManagement {
 				new TypeReference<Map<String, Object>>() {
 				});
 		response.put("monthly_planner_conf", monthlyPlannerConf.get("data"));
-
-		Map<String, String> zonesDetails = getZonesDetails();
-		response.put("zones_details", zonesDetails);
 
 		return CustomHttpResponse.responseBuilder("Configured Status", HttpStatus.ACCEPTED, response);
 	}
