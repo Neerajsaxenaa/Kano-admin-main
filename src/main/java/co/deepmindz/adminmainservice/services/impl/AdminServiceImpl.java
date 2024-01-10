@@ -39,7 +39,7 @@ public class AdminServiceImpl implements AdminService {
 		Optional<Admin> optionalAdmin = adminRepository.findByUserName(adminDto.getUserName());
 		if (optionalAdmin.isPresent())
 			throw new ResourceAlreadyExist("Admin User Already Exist");
-		
+
 		adminDto.setUserId(generateRandomUserId());
 		Admin admin = AutoAdminMapper.MAPPER.mapToAdmin(adminDto);
 		Admin savedAdmin = adminRepository.save(admin);
@@ -48,20 +48,27 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public AdminDto userByUsername(String userName) {
+	public AdminDto getAdminByUsername(String userName) {
 		Admin admin = adminRepository.findByUserName(userName)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "Id", userName));
 		return AutoAdminMapper.MAPPER.mapToAdminDto(admin);
 	}
 
 	@Override
-	public LoginRequestDto loginAdmin(LoginRequestDto loginRequestDto) {
-		return loginRequestDto;
+	public Admin updateAdminUser(@Valid UpdateAdminDto dto, AdminDto user) {
+		
+		return null;
 	}
 
 	@Override
-	public Admin updateAdminUser(@Valid UpdateAdminDto dto, AdminDto user) {
-		return adminRepository.save(adminUtil.mapDtoToEntity(dto, user));
-
+	public LoginRequestDto loginAdmin(LoginRequestDto loginAdmin) {
+		
+		return null;
 	}
+
+	
+
+	
+
+	
 }

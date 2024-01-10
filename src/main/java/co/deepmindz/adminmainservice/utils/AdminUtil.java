@@ -12,7 +12,7 @@ public class AdminUtil {
 
 	public Admin mapDtoToEntity(@Valid UpdateAdminDto dto, AdminDto user) {
 		return new Admin(user.getUserId(), user.getUserName(), dto.getEmail(), user.getLinked_zone(), dto.getPhone_number(),
-				user.getPassword(), user.getUserRole(), user.getStatus(), user.getCreatedAt(), user.getActions());
+				user.getPassword(), user.getUserRole(), user.isActive(), user.getCreatedAt(), user.getActions());
 	}
 
 }

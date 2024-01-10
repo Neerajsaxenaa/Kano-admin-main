@@ -11,7 +11,7 @@ public interface AdminService {
 
 	AdminDto createAdmin(AdminDto admin);
 
-	AdminDto userByUsername(String username);
+	AdminDto getAdminByUsername(String username);
 
 	Admin updateAdminUser(@Valid UpdateAdminDto dto ,AdminDto user);
 }

@@ -16,26 +16,26 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Admin {
-	
+
 	@Id
 	private String userId;
 
 	private String userName;
-	
+
 	private String email;
-	
+
 	private String linked_zone;
-	
+
 	private String phone_number;
-	
+
 	private String password;
-	
+
 	private String role;
-	
-	private String status;
-	
+
+	private boolean active;
+
 	private String createdAt;
-	
+
 	@Column(nullable = true)
 	private List<String> actions;
 
