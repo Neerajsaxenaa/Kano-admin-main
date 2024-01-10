@@ -13,5 +13,7 @@ public interface AdminService {
 
 	AdminDto getAdminByUsername(String username);
 
-	Admin updateAdminUser(@Valid UpdateAdminDto dto ,AdminDto user);
+	Admin updateAdminUser(@Valid UpdateAdminDto dto, AdminDto user);
+
+	AdminDto getCoordinatorByLinkedZoneID(String linkedZoneId);
 }

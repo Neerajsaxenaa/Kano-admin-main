@@ -4,11 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.xml.transform.Templates;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,9 +30,9 @@ import jakarta.validation.Valid;
 public class AdminUserManagement {
 	@Autowired
 	private AdminService adminService;
-	
+
 	@Autowired
-	 RestTemplate restTemplate;
+	RestTemplate restTemplate;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -47,8 +44,7 @@ public class AdminUserManagement {
 		Map<String, Object> response = new LinkedHashMap<>();
 		response.put("UserId", savedAdminDto.getUserId());
 		response.put("Username", savedAdminDto.getUserName());
-		
-		
+
 		return CustomHttpResponse.responseBuilder("Admin User has been created", HttpStatus.CREATED, response);
 	}
 
@@ -76,8 +72,11 @@ public class AdminUserManagement {
 		return CustomHttpResponse.responseBuilder("Admin User successfully updated", HttpStatus.OK, updateAdminUser);
 
 	}
-	
-	
-	
+
+	@PostMapping("/get-coordinatorby-linkedzone-id/{linkedZoneId}")
+	public ResponseEntity<Object> getCoordinatorByLinkedZoneID(@PathVariable String linkedZoneId) {
+		return CustomHttpResponse.responseBuilder("Get Admin by linkedzone", HttpStatus.OK,
+				adminService.getCoordinatorByLinkedZoneID(linkedZoneId));
+	}
 
 }

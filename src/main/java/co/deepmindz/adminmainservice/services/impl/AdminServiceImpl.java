@@ -56,19 +56,23 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Admin updateAdminUser(@Valid UpdateAdminDto dto, AdminDto user) {
-		
+
 		return null;
 	}
 
 	@Override
 	public LoginRequestDto loginAdmin(LoginRequestDto loginAdmin) {
-		
+
 		return null;
 	}
 
-	
+	@Override
+	public AdminDto getCoordinatorByLinkedZoneID(String linkedZoneId) {
+		Admin adminUser = adminRepository.getAdminUserByLinkedZoneId(linkedZoneId);
+		if (adminUser == null)
+			throw new ResourceNotFoundException("User", "Id", linkedZoneId);
+		return AutoAdminMapper.MAPPER.mapToAdminDto(adminUser);
 
-	
+	}
 
-	
 }
