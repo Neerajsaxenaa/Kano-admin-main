@@ -16,12 +16,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Admin {
+	
 	@Id
 	private String userId;
 
 	private String userName;
 	
-	private String name;
+	private String email;
+	
+	private String linked_zone;
+	
+	private String phone_number;
 	
 	private String password;
 	
