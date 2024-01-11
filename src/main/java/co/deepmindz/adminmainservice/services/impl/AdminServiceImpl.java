@@ -15,8 +15,6 @@ import co.deepmindz.adminmainservice.mapper.AutoAdminMapper;
 import co.deepmindz.adminmainservice.models.Admin;
 import co.deepmindz.adminmainservice.repository.AdminRepository;
 import co.deepmindz.adminmainservice.services.AdminService;
-import co.deepmindz.adminmainservice.utils.AdminUtil;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -25,9 +23,6 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	private AdminRepository adminRepository;
-
-	@Autowired
-	private AdminUtil adminUtil;
 
 	public String generateRandomUserId() {
 		UUID uuid = UUID.randomUUID();
@@ -55,15 +50,18 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Admin updateAdminUser(@Valid UpdateAdminDto dto, AdminDto user) {
+	public Admin updateAdminUser(UpdateAdminDto dto, String userName) {
+		Admin admin = adminRepository.findByUserName(userName)
+				.orElseThrow(() -> new ResourceNotFoundException("admin", userName, userName));
 
-		return null;
-	}
+		if (dto.getEmail() != null || !dto.getEmail().isEmpty() || !dto.getEmail().equals(admin.getEmail()))
+			admin.setEmail(dto.getEmail());
+		if (dto.getPhone_number() != null || !dto.getPhone_number().isEmpty()
+				|| !dto.getPhone_number().equals(admin.getPhone_number()))
+			admin.setPhone_number(dto.getPhone_number());
 
-	@Override
-	public LoginRequestDto loginAdmin(LoginRequestDto loginAdmin) {
-
-		return null;
+		Admin savedAdmin = adminRepository.save(admin);
+		return savedAdmin;
 	}
 
 	@Override
@@ -74,5 +72,4 @@ public class AdminServiceImpl implements AdminService {
 		return AutoAdminMapper.MAPPER.mapToAdminDto(adminUser);
 
 	}
-
 }

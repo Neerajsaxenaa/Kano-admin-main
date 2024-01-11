@@ -2,6 +2,8 @@ package co.deepmindz.adminmainservice.models;
 
 import java.util.List;
 
+import org.hibernate.annotations.UuidGenerator;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -18,6 +20,7 @@ import lombok.ToString;
 public class Admin {
 
 	@Id
+	@UuidGenerator
 	private String userId;
 
 	private String userName;

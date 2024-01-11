@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,15 +61,8 @@ public class AdminUserManagement {
 	@PostMapping("/update-admin-user/{username}")
 	public ResponseEntity<Object> updateAdminUser(@Valid @PathVariable String username,
 			@RequestBody UpdateAdminDto dto) {
-
-		AdminDto user = adminService.getAdminByUsername(username);
-		boolean password = BCrypt.checkpw(user.getPassword(), username);
-		Admin updateAdminUser = null;
-		if (!password)
-			return CustomHttpResponse.responseBuilder("Invalid password..!!", HttpStatus.OK, updateAdminUser);
-		updateAdminUser = adminService.updateAdminUser(dto, user);
-		return CustomHttpResponse.responseBuilder("Admin User successfully updated", HttpStatus.OK, updateAdminUser);
-
+		Admin admin = adminService.updateAdminUser(dto, username);
+		return CustomHttpResponse.responseBuilder("user updated successfully", HttpStatus.OK, admin);
 	}
 
 	@PostMapping("/get-coordinatorby-linkedzone-id/{linkedZoneId}")
@@ -78,5 +70,4 @@ public class AdminUserManagement {
 		return CustomHttpResponse.responseBuilder("Get Admin by linkedzone", HttpStatus.OK,
 				adminService.getCoordinatorByLinkedZoneID(linkedZoneId));
 	}
-
 }
