@@ -6,9 +6,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import co.deepmindz.adminmainservice.dto.AdminChangePasswordDto;
 import co.deepmindz.adminmainservice.dto.AdminDto;
 import co.deepmindz.adminmainservice.dto.AdminResponseDto;
 import co.deepmindz.adminmainservice.dto.UpdateAdminDto;
@@ -83,9 +85,8 @@ public class AdminServiceImpl implements AdminService {
 		List<Admin> allAdmins = adminRepository.findAll();
 		List<AdminResponseDto> response = new ArrayList<>();
 		for (Admin admin : allAdmins)
-			response.add(new AdminResponseDto(admin.getUserId(),admin.getUserName(),
-					admin.getEmail(),admin.getLinked_zone(),admin.getPhone_number(),
-					admin.getRole(),admin.isActive()));
+			response.add(new AdminResponseDto(admin.getUserId(), admin.getUserName(), admin.getEmail(),
+					admin.getLinked_zone(), admin.getPhone_number(), admin.getRole(), admin.isActive()));
 		return response;
 	}
 
@@ -96,7 +97,20 @@ public class AdminServiceImpl implements AdminService {
 		admin.setPassword(passwordEncoder.encode(password));
 		Admin savedAdmin = adminRepository.save(admin);
 		return savedAdmin.getUserName();
+	}
 
+	public String changePassword(String userName, AdminChangePasswordDto dto) {
+		String response = "Password changed successfully";
+		Admin admin = adminRepository.findByUserName(userName)
+				.orElseThrow(() -> new ResourceNotFoundException("admin", userName, userName));
+		if (!BCrypt.checkpw(dto.getCurrentPassword(), admin.getPassword()))
+			return "Password mismatch !! enter correct password";
+
+		admin.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+		Admin saveAdmin = adminRepository.save(admin);
+		if (saveAdmin == null)
+			response = "Change Password failed";
+		return response;
 	}
 
 }

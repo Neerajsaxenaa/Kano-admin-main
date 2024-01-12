@@ -2,6 +2,7 @@ package co.deepmindz.adminmainservice.services;
 
 import java.util.List;
 
+import co.deepmindz.adminmainservice.dto.AdminChangePasswordDto;
 import co.deepmindz.adminmainservice.dto.AdminDto;
 import co.deepmindz.adminmainservice.dto.AdminResponseDto;
 import co.deepmindz.adminmainservice.dto.UpdateAdminDto;
@@ -21,5 +22,7 @@ public interface AdminService {
 	public List<AdminResponseDto> getAllAdminUsers();
 
 	public String resetPassword(String userName, String password);
+
+	public String changePassword(String userName, AdminChangePasswordDto dto);
 
 }

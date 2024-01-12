@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import co.deepmindz.adminmainservice.dto.AdminChangePasswordDto;
 import co.deepmindz.adminmainservice.dto.AdminDto;
 import co.deepmindz.adminmainservice.dto.UpdateAdminDto;
 import co.deepmindz.adminmainservice.models.Admin;
@@ -77,9 +78,23 @@ public class AdminUserManagement {
 		return CustomHttpResponse.responseBuilder("getAll admins", HttpStatus.OK, adminService.getAllAdminUsers());
 	}
 
+	/*
+	 * (1) : Use by SuperAdmin for coordinator's password, (2) Use by Coordinator to
+	 * reset ssuser's password
+	 */
 	@PostMapping("/reset-password/{userName}")
 	public ResponseEntity<Object> resetPassword(@PathVariable String userName, @RequestParam String password) {
 		return CustomHttpResponse.responseBuilder("Password reset sucessfully", HttpStatus.OK,
 				adminService.resetPassword(userName, password));
+	}
+
+	/* only for coordinator use, to change own known password */
+	@PostMapping("/change-password/{userName}")
+	public ResponseEntity<Object> changePassword(@PathVariable String userName,
+			@RequestBody AdminChangePasswordDto dto) {
+		String status = adminService.changePassword(userName, dto);
+		if (status == null)
+			return CustomHttpResponse.responseBuilder(status, HttpStatus.OK, userName);
+		return CustomHttpResponse.responseBuilder(status, HttpStatus.OK, userName);
 	}
 }
