@@ -1,13 +1,16 @@
 package co.deepmindz.adminmainservice.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import co.deepmindz.adminmainservice.dto.AdminDto;
-import co.deepmindz.adminmainservice.dto.LoginRequestDto;
+import co.deepmindz.adminmainservice.dto.AdminResponseDto;
 import co.deepmindz.adminmainservice.dto.UpdateAdminDto;
 import co.deepmindz.adminmainservice.exception.ResourceAlreadyExist;
 import co.deepmindz.adminmainservice.exception.ResourceNotFoundException;
@@ -23,6 +26,9 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	private AdminRepository adminRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public String generateRandomUserId() {
 		UUID uuid = UUID.randomUUID();
@@ -70,6 +76,27 @@ public class AdminServiceImpl implements AdminService {
 		if (adminUser == null)
 			throw new ResourceNotFoundException("User", "Id", linkedZoneId);
 		return AutoAdminMapper.MAPPER.mapToAdminDto(adminUser);
+	}
+
+	@Override
+	public List<AdminResponseDto> getAllAdminUsers() {
+		List<Admin> allAdmins = adminRepository.findAll();
+		List<AdminResponseDto> response = new ArrayList<>();
+		for (Admin admin : allAdmins)
+			response.add(new AdminResponseDto(admin.getUserId(),admin.getUserName(),
+					admin.getEmail(),admin.getLinked_zone(),admin.getPhone_number(),
+					admin.getRole(),admin.isActive()));
+		return response;
+	}
+
+	@Override
+	public String resetPassword(String userName, String password) {
+		Admin admin = adminRepository.findByUserName(userName)
+				.orElseThrow(() -> new ResourceNotFoundException("admin", userName, userName));
+		admin.setPassword(passwordEncoder.encode(password));
+		Admin savedAdmin = adminRepository.save(admin);
+		return savedAdmin.getUserName();
 
 	}
+
 }
