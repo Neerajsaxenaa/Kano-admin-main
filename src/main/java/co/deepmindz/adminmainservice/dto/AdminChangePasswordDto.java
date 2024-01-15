@@ -5,13 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+public class AdminChangePasswordDto {
 
-public class UpdateAdminDto {
-
-	private String email;
-
-	private String phone_number;
-
+	private String currentPassword;
+	private String newPassword;
 }
