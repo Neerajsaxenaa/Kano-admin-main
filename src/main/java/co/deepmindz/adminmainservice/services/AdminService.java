@@ -16,7 +16,7 @@ public interface AdminService {
 
 	AdminDto getAdminByUsername(String username);
 
-	List<Admin> getMobileNoByCordinatorIds(CordinatorIds cordinatorIds);
+	List<Admin> getPhoneNumbersOfAdmins(String[] adminids);
 
 	AdminDto getCoordinatorByLinkedZoneID(String linkedZoneId);
 
