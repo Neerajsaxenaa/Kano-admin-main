@@ -71,7 +71,6 @@ public class AdminUserManagement {
 		return CustomHttpResponse.responseBuilder("user updated successfully", HttpStatus.OK, admin);
 	}
 
-<<<<<<< HEAD
 	@PostMapping("/get-mobile-by-cordinator")
 	public ResponseEntity<Object> getMobileNoByCordinatorIds(@RequestBody CordinatorIds cordinatorIds) {
 		List<Admin> cordinators = adminService.getMobileNoByCordinatorIds(cordinatorIds);
@@ -84,7 +83,6 @@ public class AdminUserManagement {
 		return CustomHttpResponse.responseBuilder("All cordinators phone_number", HttpStatus.OK, phone_numbers);
 	}
 
-=======
 	@PostMapping("/get-coordinatorby-linkedzone-id/{linkedZoneId}")
 	public ResponseEntity<Object> getCoordinatorByLinkedZoneID(@PathVariable String linkedZoneId) {
 		return CustomHttpResponse.responseBuilder("Get Admin by linkedzone", HttpStatus.OK,
@@ -115,5 +113,4 @@ public class AdminUserManagement {
 			return CustomHttpResponse.responseBuilder(status, HttpStatus.OK, userName);
 		return CustomHttpResponse.responseBuilder(status, HttpStatus.OK, userName);
 	}
->>>>>>> branch 'main' of https://github.com/SS-Whitelabel/ss-admin-main-service.git
 }

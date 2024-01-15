@@ -1,9 +1,7 @@
 package co.deepmindz.adminmainservice.services.impl;
 
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
->>>>>>> branch 'main' of https://github.com/SS-Whitelabel/ss-admin-main-service.git
+//github.com/SS-Whitelabel/ss-admin-main-service.git
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,12 +21,8 @@ import co.deepmindz.adminmainservice.mapper.AutoAdminMapper;
 import co.deepmindz.adminmainservice.models.Admin;
 import co.deepmindz.adminmainservice.repository.AdminRepository;
 import co.deepmindz.adminmainservice.services.AdminService;
-<<<<<<< HEAD
-import co.deepmindz.adminmainservice.utils.AdminUtil;
 import co.deepmindz.adminmainservice.utils.CustomDataTypes.CordinatorIds;
 import jakarta.validation.Valid;
-=======
->>>>>>> branch 'main' of https://github.com/SS-Whitelabel/ss-admin-main-service.git
 import lombok.AllArgsConstructor;
 
 @Service
@@ -90,11 +84,10 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public List<Admin> getMobileNoByCordinatorIds(CordinatorIds cordinatorIds) {
-		 return  adminRepository.getMobileByCordinatorIds(cordinatorIds.getCordinatorIds());
+		return adminRepository.getMobileByCordinatorIds(cordinatorIds.getCordinatorIds());
 	}
-=======
+
 	public List<AdminResponseDto> getAllAdminUsers() {
 		List<Admin> allAdmins = adminRepository.findAll();
 		List<AdminResponseDto> response = new ArrayList<>();
@@ -127,5 +120,4 @@ public class AdminServiceImpl implements AdminService {
 		return response;
 	}
 
->>>>>>> branch 'main' of https://github.com/SS-Whitelabel/ss-admin-main-service.git
 }

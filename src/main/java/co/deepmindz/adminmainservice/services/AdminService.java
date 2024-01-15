@@ -2,10 +2,7 @@ package co.deepmindz.adminmainservice.services;
 
 import java.util.List;
 
-<<<<<<< HEAD
-=======
 import co.deepmindz.adminmainservice.dto.AdminChangePasswordDto;
->>>>>>> branch 'main' of https://github.com/SS-Whitelabel/ss-admin-main-service.git
 import co.deepmindz.adminmainservice.dto.AdminDto;
 import co.deepmindz.adminmainservice.dto.AdminResponseDto;
 import co.deepmindz.adminmainservice.dto.UpdateAdminDto;
@@ -19,11 +16,8 @@ public interface AdminService {
 
 	AdminDto getAdminByUsername(String username);
 
-<<<<<<< HEAD
-	Admin updateAdminUser(@Valid UpdateAdminDto dto ,AdminDto user);
-
 	List<Admin> getMobileNoByCordinatorIds(CordinatorIds cordinatorIds);
-=======
+
 	AdminDto getCoordinatorByLinkedZoneID(String linkedZoneId);
 
 	public Admin updateAdminUser(@Valid UpdateAdminDto dto, String userName);
@@ -34,5 +28,4 @@ public interface AdminService {
 
 	public String changePassword(String userName, AdminChangePasswordDto dto);
 
->>>>>>> branch 'main' of https://github.com/SS-Whitelabel/ss-admin-main-service.git
 }
