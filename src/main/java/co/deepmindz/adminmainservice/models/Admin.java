@@ -18,6 +18,7 @@ import lombok.ToString;
 public class Admin {
 	
 	@Id
+	@Column(name = "user_id")
 	private String userId;
 
 	private String userName;
@@ -26,6 +27,7 @@ public class Admin {
 	
 	private String linked_zone;
 	
+	@Column(name = "phone_number")
 	private String phone_number;
 	
 	private String password;

@@ -1,10 +1,11 @@
 package co.deepmindz.adminmainservice.mapper;
 
-import co.deepmindz.adminmainservice.dto.AdminDto;
-import co.deepmindz.adminmainservice.models.Admin;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+
+import co.deepmindz.adminmainservice.dto.AdminDto;
+import co.deepmindz.adminmainservice.models.Admin;
 
 @Mapper
 public interface AutoAdminMapper  {

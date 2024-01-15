@@ -1,9 +1,12 @@
 package co.deepmindz.adminmainservice.services;
 
+import java.util.List;
+
 import co.deepmindz.adminmainservice.dto.AdminDto;
 import co.deepmindz.adminmainservice.dto.LoginRequestDto;
 import co.deepmindz.adminmainservice.dto.UpdateAdminDto;
 import co.deepmindz.adminmainservice.models.Admin;
+import co.deepmindz.adminmainservice.utils.CustomDataTypes.CordinatorIds;
 import jakarta.validation.Valid;
 
 public interface AdminService {
@@ -14,4 +17,6 @@ public interface AdminService {
 	AdminDto userByUsername(String username);
 
 	Admin updateAdminUser(@Valid UpdateAdminDto dto ,AdminDto user);
+
+	List<Admin> getMobileNoByCordinatorIds(CordinatorIds cordinatorIds);
 }

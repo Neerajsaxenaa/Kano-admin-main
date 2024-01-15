@@ -1,21 +1,14 @@
 package co.deepmindz.adminmainservice.services.impl;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.google.common.io.Files;
 
 import co.deepmindz.adminmainservice.dto.JobAidsRequestDto;
 import co.deepmindz.adminmainservice.dto.JobAidsResponse;

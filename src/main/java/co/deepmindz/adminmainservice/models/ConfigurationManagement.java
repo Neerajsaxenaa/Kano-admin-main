@@ -21,7 +21,7 @@ public class ConfigurationManagement {
 	@UuidGenerator
 	private String id;
 	private String configuration;
-	
+
 	@NotNull
 	private boolean locked;
 

@@ -1,5 +1,6 @@
 package co.deepmindz.adminmainservice.services.impl;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ import co.deepmindz.adminmainservice.models.Admin;
 import co.deepmindz.adminmainservice.repository.AdminRepository;
 import co.deepmindz.adminmainservice.services.AdminService;
 import co.deepmindz.adminmainservice.utils.AdminUtil;
+import co.deepmindz.adminmainservice.utils.CustomDataTypes.CordinatorIds;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -63,5 +65,10 @@ public class AdminServiceImpl implements AdminService {
 	public Admin updateAdminUser(@Valid UpdateAdminDto dto, AdminDto user) {
 		return adminRepository.save(adminUtil.mapDtoToEntity(dto, user));
 
+	}
+
+	@Override
+	public List<Admin> getMobileNoByCordinatorIds(CordinatorIds cordinatorIds) {
+		 return  adminRepository.getMobileByCordinatorIds(cordinatorIds.getCordinatorIds());
 	}
 }

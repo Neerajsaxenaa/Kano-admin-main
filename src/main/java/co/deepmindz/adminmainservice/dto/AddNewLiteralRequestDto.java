@@ -1,9 +1,6 @@
 package co.deepmindz.adminmainservice.dto;
 
 import co.deepmindz.adminmainservice.utils.CustomDataTypes.valueObj;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 //@Data
 //@AllArgsConstructor
