@@ -28,7 +28,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/admin-main")
 //@CrossOrigin
-public class AdminUserManagement {
+public class AdminController {
 	@Autowired
 	private AdminService adminService;
 

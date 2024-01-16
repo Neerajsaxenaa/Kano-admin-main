@@ -3,7 +3,6 @@ package co.deepmindz.adminmainservice.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -16,10 +15,10 @@ import co.deepmindz.adminmainservice.dto.AdminResponseDto;
 import co.deepmindz.adminmainservice.dto.UpdateAdminDto;
 import co.deepmindz.adminmainservice.exception.ResourceAlreadyExist;
 import co.deepmindz.adminmainservice.exception.ResourceNotFoundException;
-import co.deepmindz.adminmainservice.mapper.AutoAdminMapper;
 import co.deepmindz.adminmainservice.models.Admin;
 import co.deepmindz.adminmainservice.repository.AdminRepository;
 import co.deepmindz.adminmainservice.services.AdminService;
+import co.deepmindz.adminmainservice.utils.AdminUtil;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -32,10 +31,8 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public String generateRandomUserId() {
-		UUID uuid = UUID.randomUUID();
-		return uuid.toString();
-	}
+	@Autowired
+	private AdminUtil adminUtil;
 
 	@Override
 	public AdminDto createAdmin(AdminDto adminDto) {
@@ -43,10 +40,9 @@ public class AdminServiceImpl implements AdminService {
 		if (optionalAdmin.isPresent())
 			throw new ResourceAlreadyExist("Admin User Already Exist");
 
-		adminDto.setUserId(generateRandomUserId());
-		Admin admin = AutoAdminMapper.MAPPER.mapToAdmin(adminDto);
+		Admin admin = adminUtil.mapToAdmin(adminDto);
 		Admin savedAdmin = adminRepository.save(admin);
-		AdminDto adminSavedDto = AutoAdminMapper.MAPPER.mapToAdminDto(savedAdmin);
+		AdminDto adminSavedDto = adminUtil.mapToAdminDto(savedAdmin);
 		return adminSavedDto;
 	}
 
@@ -54,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
 	public AdminDto getAdminByUsername(String userName) {
 		Admin admin = adminRepository.findByUserName(userName)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "Id", userName));
-		return AutoAdminMapper.MAPPER.mapToAdminDto(admin);
+		return adminUtil.mapToAdminDto(admin);
 	}
 
 	@Override
@@ -77,7 +73,7 @@ public class AdminServiceImpl implements AdminService {
 		Admin adminUser = adminRepository.getAdminUserByLinkedZoneId(linkedZoneId);
 		if (adminUser == null)
 			throw new ResourceNotFoundException("User", "Id", linkedZoneId);
-		return AutoAdminMapper.MAPPER.mapToAdminDto(adminUser);
+		return adminUtil.mapToAdminDto(adminUser);
 	}
 
 	@Override
@@ -112,5 +108,4 @@ public class AdminServiceImpl implements AdminService {
 			response = "Change Password failed";
 		return response;
 	}
-
 }
