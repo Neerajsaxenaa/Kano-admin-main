@@ -22,7 +22,6 @@ import co.deepmindz.adminmainservice.models.Admin;
 import co.deepmindz.adminmainservice.repository.AdminRepository;
 import co.deepmindz.adminmainservice.services.AdminService;
 import co.deepmindz.adminmainservice.utils.CustomDataTypes.CordinatorIds;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -120,4 +119,19 @@ public class AdminServiceImpl implements AdminService {
 		return response;
 	}
 
+	@Override
+	public String blockAndUnblockAdmin(String id) {
+		Admin findAdmin = adminRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("ADMIN", id, id));
+		String message = "";
+		if (findAdmin.isActive())
+			findAdmin.setActive(false);
+		else
+			findAdmin.setActive(true);
+		Admin savedAdmin = adminRepository.save(findAdmin);
+		message = "admin updated sucessfully";
+		if (savedAdmin == null)
+			message = "Active/Inactive admin user failed";
+		return message;
+	}
 }

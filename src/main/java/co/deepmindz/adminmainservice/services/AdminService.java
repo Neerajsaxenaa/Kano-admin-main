@@ -28,4 +28,5 @@ public interface AdminService {
 
 	public String changePassword(String userName, AdminChangePasswordDto dto);
 
+	public String blockAndUnblockAdmin(String id);
 }

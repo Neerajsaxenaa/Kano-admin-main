@@ -113,4 +113,10 @@ public class AdminUserManagement {
 			return CustomHttpResponse.responseBuilder(status, HttpStatus.OK, userName);
 		return CustomHttpResponse.responseBuilder(status, HttpStatus.OK, userName);
 	}
+
+	@PostMapping("/block-unblock-admin/{id}")
+	public ResponseEntity<Object> blockAndUnblockAdmin(@PathVariable String id) {
+		String response = adminService.blockAndUnblockAdmin(id);
+		return CustomHttpResponse.responseBuilder(response, HttpStatus.OK, id);
+	}
 }
