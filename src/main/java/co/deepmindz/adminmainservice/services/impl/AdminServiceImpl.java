@@ -84,8 +84,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<Admin> getPhoneNumbersOfAdmins(String[] admins) {
-		return (List<Admin>) adminRepository.findAllById(List.of(admins));
+	public List<Admin> getPhoneNumbersOfAdmins(List<String> admins) {
+		return adminRepository.findAllById(admins);
 	}
 
 	public List<AdminResponseDto> getAllAdminUsers() {

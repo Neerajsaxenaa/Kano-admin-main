@@ -71,14 +71,14 @@ public class AdminUserManagement {
 		return CustomHttpResponse.responseBuilder("user updated successfully", HttpStatus.OK, admin);
 	}
 
-	@PostMapping("/get-phonenumbersof-admins")
-	public ResponseEntity<Object> getPhoneNumbersOfAdmins(@RequestParam String[] adminids) {
+	@PostMapping("/get-phonenumbersof-admins-for-restcall")
+	public List<String> getPhoneNumbersOfAdmins(@RequestBody List<String> adminids) {
 		List<Admin> cordinators = adminService.getPhoneNumbersOfAdmins(adminids);
 		List<String> phone_numbers = new ArrayList<>();
 		for (Admin admin : cordinators) {
 			phone_numbers.add(admin.getPhone_number());
 		}
-		return CustomHttpResponse.responseBuilder("All cordinators phone_number", HttpStatus.OK, phone_numbers);
+		return phone_numbers;
 	}
 
 	@PostMapping("/get-coordinatorby-linkedzone-id/{linkedZoneId}")
