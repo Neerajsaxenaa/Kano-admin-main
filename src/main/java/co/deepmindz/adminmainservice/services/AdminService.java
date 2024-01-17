@@ -1,5 +1,6 @@
 package co.deepmindz.adminmainservice.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import co.deepmindz.adminmainservice.dto.AdminChangePasswordDto;
@@ -15,7 +16,7 @@ public interface AdminService {
 
 	AdminDto getAdminByUsername(String username);
 
-	AdminDto getCoordinatorByLinkedZoneID(String linkedZoneId);
+	ArrayList<AdminDto> getCoordinatorByLinkedZoneID(String linkedZoneId);
 
 	public Admin updateAdminUser(@Valid UpdateAdminDto dto, String userName);
 
