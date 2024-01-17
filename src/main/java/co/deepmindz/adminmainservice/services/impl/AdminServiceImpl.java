@@ -115,11 +115,10 @@ public class AdminServiceImpl implements AdminService {
 			} catch (Exception e) {
 				System.out.println(url + "Not working, ADMIN_ORG Service not responding");
 				e.printStackTrace();
-				return null;
 			}
 		}
 
-		List<ZoneListsDto> dtos = rateResponse.getBody() != null ? rateResponse.getBody() : null;
+		List<ZoneListsDto> dtos = rateResponse.getBody() != null ? rateResponse.getBody() : new ArrayList<>();
 		Map<String, ZoneListsDto> idWithZoneMap = new HashMap<>();
 		dtos.stream().map(a -> idWithZoneMap.put(a.get_id(), a)).collect(Collectors.toList());
 

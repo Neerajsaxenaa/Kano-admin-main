@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import co.deepmindz.adminmainservice.dto.AddNewLiteralRequestDto;
@@ -93,7 +94,7 @@ public class LanguageServiceImpl implements LanguageService {
 
 	public List<valueObj> getSupportedLanguageList() {
 		List<valueObj> allsupportedLanguages = new ArrayList<>();
-		for (Languages lang : languageRepository.findAll()) {
+		for (Languages lang : languageRepository.findAll(Sort.by(Sort.Direction.ASC, "languageID"))) {
 			allsupportedLanguages.add(
 					new valueObj(lang.getLanguageID().toString(), lang.getLanguaeName(), lang.getLanguageInNative()));
 		}
