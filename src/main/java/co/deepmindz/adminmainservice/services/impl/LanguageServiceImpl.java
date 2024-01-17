@@ -188,16 +188,14 @@ public class LanguageServiceImpl implements LanguageService {
 		for (Literals literal : allLiterals) {
 			List<String> updatedLiteralsAfterDelete = new ArrayList<>();
 			for (String supportedLangLiteral : literal.getLiteralsinAllSupportedLanguage()) {
-				if (language.getLanguageID() != Integer.valueOf(supportedLangLiteral.split(":")[0])) {
-					updatedLiteralsAfterDelete.add(supportedLangLiteral);
-				}
+				if (language.getLanguageID().toString().trim().equals(supportedLangLiteral.split(":")[0].trim()))
+					continue;
+				updatedLiteralsAfterDelete.add(supportedLangLiteral);
 			}
-
 			literalsRepository.updateLiteralsWithNewLanguage(
 					updatedLiteralsAfterDelete.toArray(new String[updatedLiteralsAfterDelete.size()]),
 					literal.getLiteralID());
 		}
-
 		languageRepository.delete(language);
 	}
 
