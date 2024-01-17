@@ -1,24 +1,36 @@
 package co.deepmindz.adminmainservice.services.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import co.deepmindz.adminmainservice.dto.AdminChangePasswordDto;
 import co.deepmindz.adminmainservice.dto.AdminDto;
 import co.deepmindz.adminmainservice.dto.AdminResponseDto;
 import co.deepmindz.adminmainservice.dto.UpdateAdminDto;
+import co.deepmindz.adminmainservice.dto.ZoneListsDto;
 import co.deepmindz.adminmainservice.exception.ResourceAlreadyExist;
 import co.deepmindz.adminmainservice.exception.ResourceNotFoundException;
 import co.deepmindz.adminmainservice.models.Admin;
 import co.deepmindz.adminmainservice.repository.AdminRepository;
 import co.deepmindz.adminmainservice.services.AdminService;
 import co.deepmindz.adminmainservice.utils.AdminUtil;
+import co.deepmindz.adminmainservice.utils.Templates;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -33,6 +45,9 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	private AdminUtil adminUtil;
+
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Override
 	public AdminDto createAdmin(AdminDto adminDto) {
@@ -79,10 +94,36 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<AdminResponseDto> getAllAdminUsers() {
 		List<Admin> allAdmins = adminRepository.findAll();
+		List<String> alllinkedzones = allAdmins.stream().filter(a -> a.getLinked_zone() != null)
+				.collect(Collectors.toList()).stream().map(a -> a.getLinked_zone()).collect(Collectors.toList());
+		ResponseEntity<List<ZoneListsDto>> rateResponse = null;
+		if (alllinkedzones != null && !alllinkedzones.isEmpty()) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<Object> httpEntity = new HttpEntity<Object>(alllinkedzones, headers);
+			String url = Templates.ALLSERVICES.admin_org.toString() + "/organization/zone-list/get-all-zonelist";
+			try {
+				rateResponse = restTemplate.exchange(url, HttpMethod.POST, httpEntity,
+						new ParameterizedTypeReference<List<ZoneListsDto>>() {
+						});
+			} catch (Exception e) {
+				System.out.println(url + "Not working, ADMIN_ORG Service not responding");
+				e.printStackTrace();
+				return null;
+			}
+		}
+
+		List<ZoneListsDto> dtos = rateResponse.getBody() != null ? rateResponse.getBody() : null;
+		Map<String, ZoneListsDto> idWithZoneMap = new HashMap<>();
+		dtos.stream().map(a -> idWithZoneMap.put(a.get_id(), a)).collect(Collectors.toList());
+
 		List<AdminResponseDto> response = new ArrayList<>();
 		for (Admin admin : allAdmins)
 			response.add(new AdminResponseDto(admin.getUserId(), admin.getUserName(), admin.getEmail(),
-					admin.getLinked_zone(), admin.getPhone_number(), admin.getRole(), admin.isActive()));
+					idWithZoneMap.get(admin.getLinked_zone()) != null
+							? idWithZoneMap.get(admin.getLinked_zone()).getName()
+							: null,
+					admin.getPhone_number(), admin.getRole(), admin.isActive()));
 		return response;
 	}
 
