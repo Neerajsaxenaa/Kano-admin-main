@@ -1,13 +1,16 @@
 package co.deepmindz.adminmainservice.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +30,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/admin-main")
-//@CrossOrigin
+@CrossOrigin
 public class AdminController {
 	@Autowired
 	private AdminService adminService;
@@ -67,6 +70,16 @@ public class AdminController {
 		return CustomHttpResponse.responseBuilder("user updated successfully", HttpStatus.OK, admin);
 	}
 
+	@PostMapping("/get-phonenumbersof-admins-for-restcall")
+	public List<String> getPhoneNumbersOfAdmins(@RequestBody List<String> adminids) {
+		List<Admin> cordinators = adminService.getPhoneNumbersOfAdmins(adminids);
+		List<String> phone_numbers = new ArrayList<>();
+		for (Admin admin : cordinators) {
+			phone_numbers.add(admin.getPhone_number());
+		}
+		return phone_numbers;
+	}
+
 	@PostMapping("/get-coordinatorby-linkedzone-id/{linkedZoneId}")
 	public ResponseEntity<Object> getCoordinatorByLinkedZoneID(@PathVariable String linkedZoneId) {
 		return CustomHttpResponse.responseBuilder("Get Admin by linkedzone", HttpStatus.OK,
@@ -96,5 +109,11 @@ public class AdminController {
 		if (status == null)
 			return CustomHttpResponse.responseBuilder(status, HttpStatus.OK, userName);
 		return CustomHttpResponse.responseBuilder(status, HttpStatus.OK, userName);
+	}
+
+	@PostMapping("/block-unblock-admin/{id}")
+	public ResponseEntity<Object> blockAndUnblockAdmin(@PathVariable String id) {
+		String response = adminService.blockAndUnblockAdmin(id);
+		return CustomHttpResponse.responseBuilder(response, HttpStatus.OK, id);
 	}
 }

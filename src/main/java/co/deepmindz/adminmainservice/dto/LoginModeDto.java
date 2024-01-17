@@ -1,8 +1,5 @@
 package co.deepmindz.adminmainservice.dto;
 
-import java.util.List;
-
-import co.deepmindz.adminmainservice.models.LoginMode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

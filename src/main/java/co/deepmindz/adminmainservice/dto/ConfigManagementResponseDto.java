@@ -1,8 +1,5 @@
 package co.deepmindz.adminmainservice.dto;
 
-import org.hibernate.annotations.UuidGenerator;
-
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

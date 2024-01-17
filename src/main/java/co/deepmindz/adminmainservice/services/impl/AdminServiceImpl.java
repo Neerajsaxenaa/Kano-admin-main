@@ -31,10 +31,8 @@ import co.deepmindz.adminmainservice.repository.AdminRepository;
 import co.deepmindz.adminmainservice.services.AdminService;
 import co.deepmindz.adminmainservice.utils.AdminUtil;
 import co.deepmindz.adminmainservice.utils.Templates;
-import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
 	@Autowired
@@ -96,6 +94,10 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	public List<Admin> getPhoneNumbersOfAdmins(List<String> admins) {
+		return adminRepository.findAllById(admins);
+	}
+
 	public List<AdminResponseDto> getAllAdminUsers() {
 		List<Admin> allAdmins = adminRepository.findAll();
 		List<String> alllinkedzones = allAdmins.stream().filter(a -> a.getLinked_zone() != null)
@@ -151,5 +153,21 @@ public class AdminServiceImpl implements AdminService {
 		if (saveAdmin == null)
 			response = "Change Password failed";
 		return response;
+	}
+
+	@Override
+	public String blockAndUnblockAdmin(String id) {
+		Admin findAdmin = adminRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("ADMIN", id, id));
+		String message = "";
+		if (findAdmin.isActive())
+			findAdmin.setActive(false);
+		else
+			findAdmin.setActive(true);
+		Admin savedAdmin = adminRepository.save(findAdmin);
+		message = "admin updated sucessfully";
+		if (savedAdmin == null)
+			message = "Active/Inactive admin user failed";
+		return message;
 	}
 }

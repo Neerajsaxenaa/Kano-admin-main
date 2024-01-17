@@ -1,7 +1,6 @@
 package co.deepmindz.adminmainservice.utils;
 
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,16 +51,24 @@ public class CustomDataTypes {
 		}
 	}
 
-	static public class memberLimitObj {
-		public String ISS_STATE;
-		public String ISS_ZONAL;
-		public String ISS_LGA;
+//	static public class memberLimitObj {
+//		public String ISS_STATE;
+//		public String ISS_ZONAL;
+//		public String ISS_LGA;
+//
+//		public memberLimitObj(String ISS_STATE, String ISS_ZONAL, String ISS_LGA) {
+//			this.ISS_STATE = ISS_STATE;
+//			this.ISS_ZONAL = ISS_ZONAL;
+//			this.ISS_LGA = ISS_LGA;
+//		}
+//	}
+	
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class CordinatorIds {
+		List<String> cordinatorIds;
 
-		public memberLimitObj(String ISS_STATE, String ISS_ZONAL, String ISS_LGA) {
-			this.ISS_STATE = ISS_STATE;
-			this.ISS_ZONAL = ISS_ZONAL;
-			this.ISS_LGA = ISS_LGA;
-		}
 	}
 
 }

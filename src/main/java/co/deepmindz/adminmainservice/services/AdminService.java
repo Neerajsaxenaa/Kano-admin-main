@@ -16,6 +16,8 @@ public interface AdminService {
 
 	AdminDto getAdminByUsername(String username);
 
+	List<Admin> getPhoneNumbersOfAdmins(List<String> adminids);
+
 	ArrayList<AdminDto> getCoordinatorByLinkedZoneID(String linkedZoneId);
 
 	public Admin updateAdminUser(@Valid UpdateAdminDto dto, String userName);
@@ -26,4 +28,5 @@ public interface AdminService {
 
 	public String changePassword(String userName, AdminChangePasswordDto dto);
 
+	public String blockAndUnblockAdmin(String id);
 }

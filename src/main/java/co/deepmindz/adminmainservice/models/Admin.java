@@ -20,6 +20,7 @@ import lombok.ToString;
 public class Admin {
 
 	@Id
+	@Column(name = "user_id")
 	@UuidGenerator
 	private String userId;
 
@@ -28,7 +29,8 @@ public class Admin {
 	private String email;
 
 	private String linked_zone;
-
+	
+	@Column(name = "phone_number")
 	private String phone_number;
 
 	private String password;
