@@ -26,13 +26,12 @@ import co.deepmindz.adminmainservice.dto.UpdateAdminDto;
 import co.deepmindz.adminmainservice.models.Admin;
 import co.deepmindz.adminmainservice.resources.CustomHttpResponse;
 import co.deepmindz.adminmainservice.services.AdminService;
-import co.deepmindz.adminmainservice.utils.CustomDataTypes.CordinatorIds;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/admin-main")
 @CrossOrigin
-public class AdminUserManagement {
+public class AdminController {
 	@Autowired
 	private AdminService adminService;
 

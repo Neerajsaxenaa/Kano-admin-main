@@ -50,7 +50,7 @@ public class LanguageController {
 
 	@Autowired
 	LoginModeService loginModeService;
-	
+
 	@Autowired
 	ThemeService themeService;
 
@@ -112,7 +112,6 @@ public class LanguageController {
 	@GetMapping("/get-all-literals")
 	public ResponseEntity<Object> getAllPredefinedLiteras() {
 		List<LiteralUtils> predefinedLiterals = languageService.getAllPredefinedLiteralsAsLanguageLiteral();
-
 		return CustomHttpResponse.responseBuilder("All Literals ", HttpStatus.OK, predefinedLiterals);
 	}
 

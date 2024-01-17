@@ -1,31 +1,38 @@
 package co.deepmindz.adminmainservice.services.impl;
 
 import java.util.ArrayList;
-//github.com/SS-Whitelabel/ss-admin-main-service.git
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import co.deepmindz.adminmainservice.dto.AdminChangePasswordDto;
 import co.deepmindz.adminmainservice.dto.AdminDto;
 import co.deepmindz.adminmainservice.dto.AdminResponseDto;
 import co.deepmindz.adminmainservice.dto.UpdateAdminDto;
+import co.deepmindz.adminmainservice.dto.ZoneListsDto;
 import co.deepmindz.adminmainservice.exception.ResourceAlreadyExist;
 import co.deepmindz.adminmainservice.exception.ResourceNotFoundException;
-import co.deepmindz.adminmainservice.mapper.AutoAdminMapper;
 import co.deepmindz.adminmainservice.models.Admin;
 import co.deepmindz.adminmainservice.repository.AdminRepository;
 import co.deepmindz.adminmainservice.services.AdminService;
-import co.deepmindz.adminmainservice.utils.CustomDataTypes.CordinatorIds;
-import lombok.AllArgsConstructor;
+import co.deepmindz.adminmainservice.utils.AdminUtil;
+import co.deepmindz.adminmainservice.utils.Templates;
 
 @Service
-@AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
 	@Autowired
@@ -34,10 +41,11 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public String generateRandomUserId() {
-		UUID uuid = UUID.randomUUID();
-		return uuid.toString();
-	}
+	@Autowired
+	private AdminUtil adminUtil;
+
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Override
 	public AdminDto createAdmin(AdminDto adminDto) {
@@ -45,10 +53,9 @@ public class AdminServiceImpl implements AdminService {
 		if (optionalAdmin.isPresent())
 			throw new ResourceAlreadyExist("Admin User Already Exist");
 
-		adminDto.setUserId(generateRandomUserId());
-		Admin admin = AutoAdminMapper.MAPPER.mapToAdmin(adminDto);
+		Admin admin = adminUtil.mapToAdmin(adminDto);
 		Admin savedAdmin = adminRepository.save(admin);
-		AdminDto adminSavedDto = AutoAdminMapper.MAPPER.mapToAdminDto(savedAdmin);
+		AdminDto adminSavedDto = adminUtil.mapToAdminDto(savedAdmin);
 		return adminSavedDto;
 	}
 
@@ -56,7 +63,7 @@ public class AdminServiceImpl implements AdminService {
 	public AdminDto getAdminByUsername(String userName) {
 		Admin admin = adminRepository.findByUserName(userName)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "Id", userName));
-		return AutoAdminMapper.MAPPER.mapToAdminDto(admin);
+		return adminUtil.mapToAdminDto(admin);
 	}
 
 	@Override
@@ -75,11 +82,15 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public AdminDto getCoordinatorByLinkedZoneID(String linkedZoneId) {
+	public ArrayList<AdminDto> getCoordinatorByLinkedZoneID(String linkedZoneId) {
+		ArrayList<AdminDto> response = new ArrayList<>();
 		Admin adminUser = adminRepository.getAdminUserByLinkedZoneId(linkedZoneId);
 		if (adminUser == null)
 			throw new ResourceNotFoundException("User", "Id", linkedZoneId);
-		return AutoAdminMapper.MAPPER.mapToAdminDto(adminUser);
+		AdminDto dto = adminUtil.mapToAdminDto(adminUser);
+		if (dto != null)
+			response.add(dto);
+		return response;
 	}
 
 	@Override
@@ -89,10 +100,36 @@ public class AdminServiceImpl implements AdminService {
 
 	public List<AdminResponseDto> getAllAdminUsers() {
 		List<Admin> allAdmins = adminRepository.findAll();
+		List<String> alllinkedzones = allAdmins.stream().filter(a -> a.getLinked_zone() != null)
+				.collect(Collectors.toList()).stream().map(a -> a.getLinked_zone()).collect(Collectors.toList());
+		ResponseEntity<List<ZoneListsDto>> rateResponse = null;
+		if (alllinkedzones != null && !alllinkedzones.isEmpty()) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<Object> httpEntity = new HttpEntity<Object>(alllinkedzones, headers);
+			String url = Templates.ALLSERVICES.admin_org.toString() + "/organization/zone-list/get-all-zonelist";
+			try {
+				rateResponse = restTemplate.exchange(url, HttpMethod.POST, httpEntity,
+						new ParameterizedTypeReference<List<ZoneListsDto>>() {
+						});
+			} catch (Exception e) {
+				System.out.println(url + "Not working, ADMIN_ORG Service not responding");
+				e.printStackTrace();
+				return null;
+			}
+		}
+
+		List<ZoneListsDto> dtos = rateResponse.getBody() != null ? rateResponse.getBody() : null;
+		Map<String, ZoneListsDto> idWithZoneMap = new HashMap<>();
+		dtos.stream().map(a -> idWithZoneMap.put(a.get_id(), a)).collect(Collectors.toList());
+
 		List<AdminResponseDto> response = new ArrayList<>();
 		for (Admin admin : allAdmins)
 			response.add(new AdminResponseDto(admin.getUserId(), admin.getUserName(), admin.getEmail(),
-					admin.getLinked_zone(), admin.getPhone_number(), admin.getRole(), admin.isActive()));
+					idWithZoneMap.get(admin.getLinked_zone()) != null
+							? idWithZoneMap.get(admin.getLinked_zone()).getName()
+							: null,
+					admin.getPhone_number(), admin.getRole(), admin.isActive()));
 		return response;
 	}
 
