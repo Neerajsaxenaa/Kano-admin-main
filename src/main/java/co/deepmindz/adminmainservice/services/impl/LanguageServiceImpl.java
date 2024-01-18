@@ -67,23 +67,21 @@ public class LanguageServiceImpl implements LanguageService {
 		Languages newLanObj = new Languages();
 		newLanObj.setLanguaeName(newLanguageData.getNewLanguage().toLowerCase());
 		newLanObj.setLanguageInNative(newLanguageData.getNewLanguageInNative());
-//		newLanObj.setLanguageID(2);
-
 		Languages newLanguage = languageRepository.save(newLanObj);
+
 		List<Literals> literalsList = new ArrayList<>();
 		for (keyValuePair pair : newLanguageData.getLiterals()) {
-
+			Literals obj = new Literals();
+			obj.setLiteral(pair.value);
+			obj.setLiteralID(pair.key);
 			if (literalIDWithLiteralMap.get(pair.key) != null) {
 				List<String> literalInAllLangs = new ArrayList<>();
 				literalInAllLangs
 						.addAll(List.of(literalIDWithLiteralMap.get(pair.key).getLiteralsinAllSupportedLanguage()));
 				literalInAllLangs.add(newLanguage.getLanguageID() + ":" + pair.value);
-				literalsRepository.updateLiteralsWithNewLanguage(
-						literalInAllLangs.toArray(new String[literalInAllLangs.size()]), pair.key);
+				obj.setLiteralsinAllSupportedLanguage(literalInAllLangs.toArray(new String[literalInAllLangs.size()]));
+				literalsList.add(obj);
 			} else {
-				Literals obj = new Literals();
-				obj.setLiteralID(pair.key);
-				obj.setLiteral(pair.value);
 				obj.setLiteralsinAllSupportedLanguage(new String[] { newLanguage.getLanguageID() + ":" + pair.value });
 				literalsList.add(obj);
 			}

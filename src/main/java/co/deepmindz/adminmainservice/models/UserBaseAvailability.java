@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor@Getter@Setter@NoArgsConstructor@Entity
+@AllArgsConstructor
+@Getter@Setter
+@NoArgsConstructor@Entity
 public class UserBaseAvailability {
     @Id
     private String _id;
