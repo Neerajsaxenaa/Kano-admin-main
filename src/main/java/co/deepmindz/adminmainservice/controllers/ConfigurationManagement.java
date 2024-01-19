@@ -55,14 +55,14 @@ public class ConfigurationManagement {
 	@Autowired
 	ThemeService themeService;
 
-//	@Value("${ISS_STATE_LIMIT}")
-//	private String iss_state_limit;
-//
-//	@Value("${ISS_ZONAL_LIMIT}")
-//	private String iss_zonal_limit;
-//
-//	@Value("${ISS_LGA_LIMIT}")
-//	private String iss_lga_limit;
+	@Value("${ISS_STATE_LIMIT}")
+	private String iss_state_limit;
+
+	@Value("${ISS_ZONAL_LIMIT}")
+	private String iss_zonal_limit;
+
+	@Value("${ISS_LGA_LIMIT}")
+	private String iss_lga_limit;
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -83,10 +83,10 @@ public class ConfigurationManagement {
 		List<CustomDataTypes.valueObj> result = languageService.getSupportedLanguageList();
 		Map<String, String> appStatics = getStringStringMap();
 		response.put("currentLoginModeStatus", currentLoginModeStatus);
-//		response.put("rolesVisitConfig",
-//				new CustomDataTypes.memberLimitObj(iss_stateimit, iss_zonal_limit, iss_lga_limit;
 		response.put("rolesVisitConfig",
-		new ArrayList<>());
+				new CustomDataTypes.memberLimitObj(iss_state_limit, iss_zonal_limit, iss_lga_limit));
+//		response.put("rolesVisitConfig",
+//		new ArrayList<>());
 		response.put("appStatics", appStatics);
 
 		if (visitModeConfiguration.get("message").contains(Templates.VISITTYPES.Team_Visit.name()))
