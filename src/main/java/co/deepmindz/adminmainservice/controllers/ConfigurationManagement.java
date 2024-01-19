@@ -88,7 +88,7 @@ public class ConfigurationManagement {
 //		response.put("rolesVisitConfig",
 //		new ArrayList<>());
 		response.put("appStatics", appStatics);
-
+		response.put("supportedLanguage", result);
 		if (visitModeConfiguration.get("message").contains(Templates.VISITTYPES.Team_Visit.name()))
 			response.put("teamsVisitConfigured", true);
 		else {
