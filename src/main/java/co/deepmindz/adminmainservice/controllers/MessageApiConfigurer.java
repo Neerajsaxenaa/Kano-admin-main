@@ -20,6 +20,7 @@ public class MessageApiConfigurer {
 	@Autowired
 	private MessageApiService messageApiService;
 
+	
 	@PostMapping("/save-message-api")
 	public ResponseEntity<Object> saveMessageApi(@RequestBody MessageApiRequestDto dto) {
 		MessageApis messageApis = messageApiService.saveMessageApi(dto);
