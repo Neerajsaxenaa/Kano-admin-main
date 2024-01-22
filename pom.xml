@@ -12,7 +12,9 @@
 	<groupId>co.deepmindz</groupId>
 	<artifactId>admin-main-service</artifactId>
 	<version>0.0.1</version>
+	
 	<name>admin-main-service</name>
+	<packaging>war</packaging>
 	<description>SS admin-main-service</description>
 	<properties>
 		<java.version>17</java.version>
@@ -27,6 +29,35 @@
 			<artifactId>modelmapper</artifactId>
 			<version>3.0.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
+<dependency>
+    <groupId>com.googlecode.json-simple</groupId>
+    <artifactId>json-simple</artifactId>
+    <version>1.1.1</version>
+</dependency>
+
+		<dependency>
+    <groupId>com.googlecode.json-simple</groupId>
+    <artifactId>json-simple</artifactId>
+    <version>1.1.1</version> <!-- Use the latest version -->
+</dependency>
+<dependency>
+    <groupId>com.googlecode.json-simple</groupId>
+    <artifactId>json-simple</artifactId>
+    <version>1.1.1</version> <!-- Use the latest version -->
+</dependency>
+	<dependency>
+    <groupId>com.googlecode.json-simple</groupId>
+    <artifactId>json-simple</artifactId>
+    <version>1.1.1</version> <!-- Use the latest version -->
+</dependency>
+
+		<dependency>
+    <groupId>com.googlecode.json-simple</groupId>
+    <artifactId>json-simple</artifactId>
+    <version>1.1.1</version> <!-- Use the latest version -->
+</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -114,6 +145,7 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
+		<finalName>admin-main-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
