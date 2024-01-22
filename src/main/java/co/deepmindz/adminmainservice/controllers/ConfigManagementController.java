@@ -48,7 +48,7 @@ public class ConfigManagementController {
 		return CustomHttpResponse.responseBuilder("Configuration found", HttpStatus.FOUND, config);
 	}
 
-	@GetMapping("/get-all-configuration")
+	@GetMapping("/get-all-freeze-configuration")
 	public Object getConfiguration() {
 		List<ConfigurationManagement> allFreezeConfiguration = configurationService.getAllConfig();
 		Map<String,  Object> resObj = new HashMap<>();
