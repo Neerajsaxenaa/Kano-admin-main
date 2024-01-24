@@ -14,6 +14,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -22,7 +23,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import co.deepmindz.adminmainservice.dto.ConfigManagementRequestDto;
 import co.deepmindz.adminmainservice.dto.LoginModeStatusDto;
+import co.deepmindz.adminmainservice.models.ConfigurationManagement;
 import co.deepmindz.adminmainservice.models.Resources;
 import co.deepmindz.adminmainservice.resources.CustomHttpResponse;
 import co.deepmindz.adminmainservice.services.ConfigurationService;
@@ -33,11 +36,12 @@ import co.deepmindz.adminmainservice.services.ThemeService;
 import co.deepmindz.adminmainservice.utils.CustomDataTypes;
 import co.deepmindz.adminmainservice.utils.CustomDataTypes.themes;
 import co.deepmindz.adminmainservice.utils.Templates;
+import jakarta.validation.Valid;
 
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:app.properties")
 @RestController
 @RequestMapping("/admin-main/config")
-public class ConfigurationManagement {
+public class ConfigurationManagementController {
 
 	@Autowired
 	ConfigurationService configurationService;
@@ -146,4 +150,33 @@ public class ConfigurationManagement {
 //        loginModeService.resetLoginMode();
 //        return CustomHttpResponse.responseBuilder("LoginMode has been reset", HttpStatus.OK, "/reset-login-mode");
 //    }
+
+	@PostMapping("/set-configuration")
+	public ResponseEntity<Object> setConfigManagement(@Valid @RequestBody ConfigManagementRequestDto dto) {
+		return CustomHttpResponse.responseBuilder("Configuration has been locked", HttpStatus.OK,
+				configurationService.setConfigManagement(dto));
+	}
+
+	@PostMapping("/get-configuration")
+	public Object getConfiguration(@Valid @RequestBody ConfigManagementRequestDto dto) {
+		ConfigurationManagement config = configurationService.getConfig(dto);
+		if (config == null) {
+			return CustomHttpResponse.responseBuilder("No Configution found", HttpStatus.OK, " ");
+		}
+		return CustomHttpResponse.responseBuilder("Configuration found", HttpStatus.FOUND, config);
+	}
+
+	@GetMapping("/get-all-freeze-configuration")
+	public Object getConfiguration() {
+		List<ConfigurationManagement> allFreezeConfiguration = configurationService.getAllConfig();
+		Map<String, Object> resObj = new HashMap<>();
+		resObj.put("freeze_configuration", allFreezeConfiguration);
+		Map<String, String> visitModeConfigurations = getVisitModeConfigurations();
+		if (visitModeConfigurations.get("message").contains(Templates.VISITTYPES.Team_Visit.name()))
+			resObj.put("teamsVisitConfigured", true);
+		else {
+			resObj.put("teamsVisitConfigured", false);
+		}
+		return CustomHttpResponse.responseBuilder("All Configuration ", HttpStatus.OK, resObj);
+	}
 }
