@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import co.deepmindz.adminmainservice.dto.ConfigManagementRequestDto;
-import co.deepmindz.adminmainservice.models.ConfigurationManagement;
+import co.deepmindz.adminmainservice.dto.ConfigurationDto;
+import co.deepmindz.adminmainservice.models.Configuration;
 
 @Service
 public interface ConfigurationService {
 
-	ConfigurationManagement setConfigManagement(ConfigManagementRequestDto status);
+	Configuration setConfigManagement(ConfigurationDto status);
 
-	ConfigurationManagement getConfig(ConfigManagementRequestDto dto);
+	Configuration getCurrentConfig(ConfigurationDto dto);
 
-	List<ConfigurationManagement> getAllConfig();
+	List<Configuration> getAllConfig();
 
 }
