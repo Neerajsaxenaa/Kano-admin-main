@@ -108,13 +108,13 @@ public class AdminServiceImpl implements AdminService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			HttpEntity<Object> httpEntity = new HttpEntity<Object>(alllinkedzones, headers);
-			String url = Templates.ALLSERVICES.admin_org.toString() + "/organization/zone-list/get-all-zonelist";
+			String url = Templates.ALLSERVICES.visit_service.toString() + "/organization/zone-list/get-all-zonelist";
 			try {
 				rateResponse = restTemplate.exchange(url, HttpMethod.POST, httpEntity,
 						new ParameterizedTypeReference<List<ZoneListsDto>>() {
 						});
 			} catch (Exception e) {
-				System.out.println(url + "Not working, ADMIN_ORG Service not responding");
+				System.out.println(url + "Not working, Visit_Service not responding");
 				e.printStackTrace();
 			}
 		}
