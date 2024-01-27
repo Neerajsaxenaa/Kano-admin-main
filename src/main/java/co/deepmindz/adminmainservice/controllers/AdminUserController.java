@@ -30,7 +30,6 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/admin-main")
-@CrossOrigin
 public class AdminUserController {
 	
 	@Autowired

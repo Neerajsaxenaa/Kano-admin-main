@@ -107,7 +107,7 @@ public class AdminDto {
 
 	private String userRole;
 
-	private boolean active;
+	private boolean active = true;
 
 	private String createdAt;
 

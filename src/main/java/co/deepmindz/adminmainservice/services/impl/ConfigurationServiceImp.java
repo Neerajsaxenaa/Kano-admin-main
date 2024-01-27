@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.deepmindz.adminmainservice.dto.ConfigManagementRequestDto;
-import co.deepmindz.adminmainservice.models.ConfigurationManagement;
+import co.deepmindz.adminmainservice.dto.ConfigurationDto;
+import co.deepmindz.adminmainservice.models.Configuration;
 import co.deepmindz.adminmainservice.repository.ConfigurationRepository;
 import co.deepmindz.adminmainservice.services.ConfigurationService;
 import co.deepmindz.adminmainservice.utils.configUtil;
@@ -23,9 +23,9 @@ public class ConfigurationServiceImp implements ConfigurationService {
 	private configUtil configUtil;
 
 	@Override
-	public ConfigurationManagement setConfigManagement(ConfigManagementRequestDto dto) {
-		ConfigurationManagement configurationManagement = null;
-		ConfigurationManagement configFoundInDB = getConfig(dto);
+	public Configuration setConfigManagement(ConfigurationDto dto) {
+		Configuration configurationManagement = null;
+		Configuration configFoundInDB = getCurrentConfig(dto);
 		configurationManagement = configUtil.mapDtoToEntity(dto);
 		if (configFoundInDB != null)
 			configurationManagement.setId(configFoundInDB.getId());
@@ -33,16 +33,14 @@ public class ConfigurationServiceImp implements ConfigurationService {
 	}
 
 	@Override
-	public ConfigurationManagement getConfig(ConfigManagementRequestDto dto) {
-		ConfigurationManagement findByService = configRepository.findByService(dto.getConfiguration());
-
-		return findByService;
-
+	public Configuration getCurrentConfig(ConfigurationDto dto) {
+		Configuration currentStatusOfParticularConfig = configRepository
+				.findCurrentStatusOfConfig(dto.getConfiguration());
+		return currentStatusOfParticularConfig;
 	}
 
 	@Override
-	public List<ConfigurationManagement> getAllConfig() {
-		return  configRepository.findAll();
+	public List<Configuration> getAllConfig() {
+		return configRepository.findAll();
 	}
-
 }
