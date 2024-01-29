@@ -37,12 +37,6 @@ public class Templates {
 			}
 		},
 
-		admin_org {
-			public String toString() {
-				return "http://admin-org-hierarchy-service";
-			}
-		},
-
 		visit_service {
 			public String toString() {
 				return "http://ss-visit-service";

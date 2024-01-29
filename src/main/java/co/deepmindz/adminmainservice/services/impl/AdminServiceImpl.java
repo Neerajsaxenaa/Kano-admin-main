@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -98,7 +99,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	public List<AdminResponseDto> getAllAdminUsers() {
-		List<Admin> allAdmins = adminRepository.findAll();
+		List<Admin> allAdmins = adminRepository.findAll(Sort.by(Sort.Direction.ASC, "userName"));
 		List<String> alllinkedzones = allAdmins.stream().filter(a -> a.getLinked_zone() != null)
 				.collect(Collectors.toList()).stream().map(a -> a.getLinked_zone()).collect(Collectors.toList());
 		ResponseEntity<List<ZoneListsDto>> rateResponse = null;
@@ -106,13 +107,13 @@ public class AdminServiceImpl implements AdminService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			HttpEntity<Object> httpEntity = new HttpEntity<Object>(alllinkedzones, headers);
-			String url = Templates.ALLSERVICES.admin_org.toString() + "/organization/zone-list/get-all-zonelist";
+			String url = Templates.ALLSERVICES.visit_service.toString() + "/organization/zone-list/get-all-zonelist";
 			try {
 				rateResponse = restTemplate.exchange(url, HttpMethod.POST, httpEntity,
 						new ParameterizedTypeReference<List<ZoneListsDto>>() {
 						});
 			} catch (Exception e) {
-				System.out.println(url + "Not working, ADMIN_ORG Service not responding");
+				System.out.println(url + "Not working, Visit_Service not responding");
 				e.printStackTrace();
 			}
 		}
