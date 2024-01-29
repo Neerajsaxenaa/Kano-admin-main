@@ -82,14 +82,13 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public ArrayList<AdminDto> getCoordinatorByLinkedZoneID(String linkedZoneId) {
+	public ArrayList<AdminDto> getCoordinatorByLinkedZoneID(List<String> linkedZoneId) {
 		ArrayList<AdminDto> response = new ArrayList<>();
-		Admin adminUser = adminRepository.getAdminUserByLinkedZoneId(linkedZoneId);
-		if (adminUser == null)
-			throw new ResourceNotFoundException("User", "Id", linkedZoneId);
-		AdminDto dto = adminUtil.mapToAdminDto(adminUser);
-		if (dto != null)
-			response.add(dto);
+		List<Admin> adminUser = adminRepository.getAdminUserByLinkedZoneId(linkedZoneId);
+		if (adminUser == null || adminUser.isEmpty())
+			return response;
+		for (Admin ad : adminUser)
+			response.add(adminUtil.mapToAdminDto(ad));
 		return response;
 	}
 

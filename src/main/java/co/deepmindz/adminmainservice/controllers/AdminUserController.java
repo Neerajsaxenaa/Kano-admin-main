@@ -2,15 +2,17 @@ package co.deepmindz.adminmainservice.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +33,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/admin-main")
 public class AdminUserController {
-	
+
 	@Autowired
 	private AdminService adminService;
 
@@ -83,7 +85,7 @@ public class AdminUserController {
 	@PostMapping("/get-coordinatorby-linkedzone-id/{linkedZoneId}")
 	public ResponseEntity<Object> getCoordinatorByLinkedZoneID(@PathVariable String linkedZoneId) {
 		return CustomHttpResponse.responseBuilder("Get Admin by linkedzone", HttpStatus.OK,
-				adminService.getCoordinatorByLinkedZoneID(linkedZoneId));
+				adminService.getCoordinatorByLinkedZoneID(List.of(linkedZoneId)));
 	}
 
 	@GetMapping("/getall-admin-users")
@@ -115,5 +117,15 @@ public class AdminUserController {
 	public ResponseEntity<Object> blockAndUnblockAdmin(@PathVariable String id) {
 		String response = adminService.blockAndUnblockAdmin(id);
 		return CustomHttpResponse.responseBuilder(response, HttpStatus.OK, id);
+	}
+
+	@PostMapping("/get-free-zones-outof-usedby-admins")
+	public List<String> removeUsedZonelistbyAllAdmins(@RequestBody List<String> zonelist) {
+		Set<String> allzones = new HashSet<String>(zonelist);
+		ArrayList<AdminDto> adminDtos = adminService.getCoordinatorByLinkedZoneID(zonelist);
+		List<String> occupiedZones = adminDtos.stream().filter(a -> allzones.contains(a.getLinked_zone()))
+				.collect(Collectors.toList()).stream().map(b->b.getLinked_zone()).collect(Collectors.toList());
+		allzones.removeAll(occupiedZones);
+		return new ArrayList<>(allzones);
 	}
 }

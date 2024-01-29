@@ -20,7 +20,7 @@ public interface AdminRepository extends JpaRepository<Admin, String> {
 
 	Optional<Admin> findByUserName(String userName);
 
-	@Query(nativeQuery = true, value = "select * from admin where linked_zone = :linkedzoneid")
-	public Admin getAdminUserByLinkedZoneId(@Param("linkedzoneid") String linkedzoneid);
+	@Query(nativeQuery = true, value = "select * from admin where linked_zone IN :linkedzoneid")
+	public List<Admin> getAdminUserByLinkedZoneId(@Param("linkedzoneid") List<String> linkedzoneid);
 
 }

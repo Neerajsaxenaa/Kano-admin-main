@@ -77,7 +77,7 @@ public class ConfigurationController {
 	}
 
 	@GetMapping("/get-configurations")
-	public ResponseEntity<Object> primary() throws JsonProcessingException {
+	public ResponseEntity<Object> getAllConfig() throws JsonProcessingException {
 		Map<String, Object> response = new LinkedHashMap<>();
 		LoginModeStatusDto currentLoginModeStatus = loginModeService.getCurrentConfig();
 		Map<String, String> visitModeConfiguration = getVisitModeConfigurations();
@@ -155,7 +155,7 @@ public class ConfigurationController {
 	}
 
 	@GetMapping("/get-all-freezed-configuration")
-	public Object getConfiguration() {
+	public Object getAllFreezedConfig() {
 		List<Configuration> allFreezeConfiguration = configurationService.getAllConfig();
 		Map<String, Object> resObj = new HashMap<>();
 		resObj.put("freeze_configuration", allFreezeConfiguration);
